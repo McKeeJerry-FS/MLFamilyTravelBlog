@@ -25,5 +25,14 @@ namespace MLFamilyTravelBlog.Models
                 return null;
             }
         }
+
+        // Image Properties
+        [NotMapped]
+        public IFormFile? ImageData { get; set; }
+        public byte[]? ImageType { get; set; }
+        public string? ImageFile { get; set; }
+
+        // Navigation Properties (Plural)
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
     }
 }

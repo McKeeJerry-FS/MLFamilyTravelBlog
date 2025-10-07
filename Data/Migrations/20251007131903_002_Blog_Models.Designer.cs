@@ -3,6 +3,7 @@ using System;
 using MLFamilyTravelBlog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MLFamilyTravelBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251007131903_002_Blog_Models")]
+    partial class _002_Blog_Models
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,12 +147,6 @@ namespace MLFamilyTravelBlog.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
-
-                    b.Property<string>("ImageFile")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("ImageType")
-                        .HasColumnType("bytea");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -488,7 +485,7 @@ namespace MLFamilyTravelBlog.Data.Migrations
             modelBuilder.Entity("MLFamilyTravelBlog.Models.Comment", b =>
                 {
                     b.HasOne("MLFamilyTravelBlog.Models.BlogUser", "Author")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -560,11 +557,6 @@ namespace MLFamilyTravelBlog.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
-                });
-
-            modelBuilder.Entity("MLFamilyTravelBlog.Models.BlogUser", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("MLFamilyTravelBlog.Models.Category", b =>
