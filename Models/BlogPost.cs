@@ -29,9 +29,9 @@ namespace MLFamilyTravelBlog.Models
 
         // Image Properties
         [NotMapped]
-        public IFormFile? ImageData { get; set; }
-        public byte[]? ImageType { get; set; }
-        public string? ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
+        public byte[]? ImageData { get; set; }
+        public string? ImageType { get; set; }
 
         // Navigation Properties (Singular)
         public virtual Category? Category { get; set; }

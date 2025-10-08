@@ -85,11 +85,11 @@ namespace MLFamilyTravelBlog.Data.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("ImageFile")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("ImageType")
+                    b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
+
+                    b.Property<string>("ImageType")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
