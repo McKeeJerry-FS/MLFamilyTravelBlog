@@ -1,107 +1,77 @@
-﻿@model IEnumerable<MLFamilyTravelBlog.Models.BlogPost>
+﻿@model IPagedList<MLFamilyTravelBlog.Models.BlogPost>
+@inject IImageService _imageService
 
 @{
     ViewData["Title"] = "Index";
+    string? searchString = ViewBag.Search;
 }
 
-<h1>Index</h1>
+<!-- Start Author Area  -->
+[Author Area]
+<!-- End Author Area  -->
+<!-- Start Post List Wrapper  -->
+<div class="axil-post-list-area axil-section-gap bg-color-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-title">
+                    @if (string.IsNullOrEmpty(searchString))
+                    {
+                        <h2 class="title mb--40">Welcome to The Tech Pulse!</h2>
+                    }
+                    else
+                    {
+                        <h2 class="title mb--40">Search Results for '@searchString'!</h2>
+                    }
+                </div>
+            </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Abstract)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RevivalDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPublished)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ViewCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abstract)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RevivalDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPublished)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ViewCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFile)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <!-- Start Post List  -->
+            <div class="col-lg-8 col-xl-8">
+                @* [List Blogs] *@
+                @foreach (BlogPost blogPost in Model)
+                {
+                    <!-- blog card partial start  -->
+                    <partial name="_BlogCardPartial" model="blogPost" />
+                    <!-- blog card partial end  -->
+                }
+            </div>
+            <!-- End Post List  -->
+            <!-- Start Sidebar Area  -->
+            <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
+                <partial name="_SideBarPartial" />
+            </div>
+
+            <!-- End Sidebar Area  -->
+            <!-- Pagination Code Start-->
+
+            <div>
+                <div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>
+                @if (string.IsNullOrEmpty(searchString))
+                {
+
+                    @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "my-page-item" },
+                        PageClasses = new string[] { "my-page-link" }
+                    })
+                                }
+                else
+                {
+                    @Html.PagedListPager(Model, pageNum => Url.Action("SearchIndex", new { pageNum, searchString }),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "my-page-item" },
+                        PageClasses = new string[] { "my-page-link" }
+                    })
+                                }
+            </div>
+
+            <!-- Pagination Code End-->
+
+        </div>
+    </div>
+<!-- End Post List Wrapper  -->
