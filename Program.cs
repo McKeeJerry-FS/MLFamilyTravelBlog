@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MLFamilyTravelBlog.Data;
 using MLFamilyTravelBlog.Models;
+using MLFamilyTravelBlog.Services;
+using MLFamilyTravelBlog.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ var connectionString = DataUtility.GetConnectionString(builder.Configuration) ??
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Adding Dependencies
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
