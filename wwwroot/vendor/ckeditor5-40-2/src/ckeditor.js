@@ -2,12 +2,30 @@
  * @license Copyright (c) 2014-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
 import { Bold, Code, Italic } from '@ckeditor/ckeditor5-basic-styles';
 import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
 import { CloudServices } from '@ckeditor/ckeditor5-cloud-services';
 import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
+{
+    EditorConfig;
+}
+from;
+'@ckeditor/ckeditor5-core';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
 import { FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
@@ -28,92 +46,98 @@ import { Base64UploadAdapter } from '@ckeditor/ckeditor5-upload';
 import { WordCount } from '@ckeditor/ckeditor5-word-count';
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
-class Editor extends ClassicEditor {
-}
-Editor.builtinPlugins = [
-    AutoImage,
-    Autoformat,
-    Base64UploadAdapter,
-    BlockQuote,
-    Bold,
-    CloudServices,
-    Code,
-    CodeBlock,
-    Essentials,
-    FindAndReplace,
-    FontBackgroundColor,
-    FontColor,
-    FontFamily,
-    FontSize,
-    Heading,
-    Highlight,
-    HorizontalLine,
-    Image,
-    ImageCaption,
-    ImageResize,
-    ImageStyle,
-    ImageToolbar,
-    ImageUpload,
-    Indent,
-    Italic,
-    Link,
-    List,
-    MediaEmbed,
-    Paragraph,
-    PasteFromOffice,
-    Table,
-    TableToolbar,
-    TextTransformation,
-    Undo,
-    WordCount
-];
-Editor.defaultConfig = {
-    toolbar: {
-        items: [
-            'heading',
-            '|',
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            '|',
-            'outdent',
-            'indent',
-            '|',
-            'imageUpload',
-            'blockQuote',
-            'insertTable',
-            'mediaEmbed',
-            'undo',
-            'redo',
-            'codeBlock',
-            'findAndReplace',
-            'fontColor',
-            'fontFamily',
-            'fontSize',
-            'fontBackgroundColor',
-            'highlight',
-            'code'
-        ]
-    },
-    language: 'en',
-    image: {
-        toolbar: [
-            'imageTextAlternative',
-            'toggleImageCaption',
-            'imageStyle:inline',
-            'imageStyle:block',
-            'imageStyle:side'
-        ]
-    },
-    table: {
-        contentToolbar: [
-            'tableColumn',
-            'tableRow',
-            'mergeTableCells'
-        ]
+var Editor = /** @class */ (function (_super) {
+    __extends(Editor, _super);
+    function Editor() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.builtinPlugins = [
+            AutoImage,
+            Autoformat,
+            Base64UploadAdapter,
+            BlockQuote,
+            Bold,
+            CloudServices,
+            Code,
+            CodeBlock,
+            Essentials,
+            FindAndReplace,
+            FontBackgroundColor,
+            FontColor,
+            FontFamily,
+            FontSize,
+            Heading,
+            Highlight,
+            HorizontalLine,
+            Image,
+            ImageCaption,
+            ImageResize,
+            ImageStyle,
+            ImageToolbar,
+            ImageUpload,
+            Indent,
+            Italic,
+            Link,
+            List,
+            MediaEmbed,
+            Paragraph,
+            PasteFromOffice,
+            Table,
+            TableToolbar,
+            TextTransformation,
+            Undo,
+            WordCount
+        ];
+        _this.defaultConfig = {
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'outdent',
+                    'indent',
+                    '|',
+                    'imageUpload',
+                    'blockQuote',
+                    'insertTable',
+                    'mediaEmbed',
+                    'undo',
+                    'redo',
+                    'codeBlock',
+                    'findAndReplace',
+                    'fontColor',
+                    'fontFamily',
+                    'fontSize',
+                    'fontBackgroundColor',
+                    'highlight',
+                    'code'
+                ]
+            },
+            language: 'en',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'toggleImageCaption',
+                    'imageStyle:inline',
+                    'imageStyle:block',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            }
+        };
+        return _this;
     }
-};
+    return Editor;
+}(ClassicEditor));
 export default Editor;
 //# sourceMappingURL=ckeditor.js.map

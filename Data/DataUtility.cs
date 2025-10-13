@@ -23,8 +23,7 @@
                 Username = userInfo[0],
                 Password = userInfo[1],
                 Database = databaseUri.AbsolutePath.TrimStart('/'),
-                SslMode = Npgsql.SslMode.Prefer,
-                TrustServerCertificate = true
+                SslMode = Npgsql.SslMode.Prefer
             };
             return builder.ConnectionString;
         }
