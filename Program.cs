@@ -4,6 +4,7 @@ using MLFamilyTravelBlog.Data;
 using MLFamilyTravelBlog.Models;
 using MLFamilyTravelBlog.Services;
 using MLFamilyTravelBlog.Services.Interfaces;
+using MLFamilyTravelBlog.Services.TechTalkBlog.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Adding Dependencies
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IBlogTagService, BlogTagService>();
 
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();

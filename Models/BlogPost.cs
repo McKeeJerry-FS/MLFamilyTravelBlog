@@ -23,6 +23,7 @@ namespace MLFamilyTravelBlog.Models
         public string? Slug { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsPublished { get; set; }
+        public bool IsArchived { get; set; }
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public int ViewCount { get; set; }

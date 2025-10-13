@@ -1,0 +1,133 @@
+﻿﻿@using MLFamilyTravelBlog.Services.Interfaces
+@inject IBlogService _blogService
+@inject IImageService _imageService
+@using MLFamilyTravelBlog.Models.Enums
+
+
+
+<!-- Start Sidebar Area  -->
+<div class="sidebar-inner">
+
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_categories mb--30">
+        <ul>
+            @foreach (Category category in (await _blogService.GetCategoriesAsync()).Take(4))
+            {
+                <li class="cat-item">
+                    <a asp-action="Index" asp-controller="BlogPosts" asp-route-categoryId="@category.Id" class="inner">
+                        <div class="thumbnail">
+                            <img src="@_imageService.ConvertByteArrayToFile(category.ImageData, category.ImageType, DefaultImage.CategoryImage)" alt="">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">@category.Name</h5>
+                        </div>
+                    </a>
+                </li>
+
+            }
+
+        </ul>
+    </div>
+    <!-- End Single Widget  -->
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_search mb--30">
+        <h5 class="widget-title">Search</h5>
+        <form asp-action="SearchIndex" asp-controller="BlogPosts" method="get">
+            <div class="axil-search form-group">
+                <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                <input type="text" class="form-control" placeholder="Search" name="searchString" value="@ViewBag.Search" />
+            </div>
+        </form>
+    </div>
+    <!-- End Single Widget  -->
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_postlist mb-30">
+        <h5 class="widget-title">Popular on Tech Pulse</h5>
+        <!-- Start Post List  -->
+        <div class="post-medium-block">
+            @foreach (BlogPost blogPost in (await _blogService.GetPopularBlogsAsync()).Take(5))
+            {
+                <div class="content-block post-medium mb--20">
+                    <div class="post-thumbnail">
+                        <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost?.Id">
+                            <img src="@_imageService.ConvertByteArrayToFile(blogPost.ImageData, blogPost.ImageType, DefaultImage.BlogPostImage)" alt="Post Images">
+                        </a>
+                    </div>
+                    <div class="post-content">
+                        <h6 class="title">
+                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@blogPost?.Slug">
+                                @blogPost!.Title
+                            </a>
+                        </h6>
+                        <div class="post-meta">
+                            <ul class="post-meta-list">
+                                <li>@blogPost!.Created.ToString("MMM dd, yyyy")</li>
+                                <li>@blogPost!.Comments!.Count()</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+
+
+        </div>
+        <!-- End Post List  -->
+
+    </div>
+    <!-- End Single Widget  -->
+    <!-- Start Single Widget  -->
+    <div class="axil-single-widget widget widget_social mb--30">
+        <h5 class="widget-title">Stay In Touch</h5>
+        <!-- Start Post List  -->
+        <ul class="social-icon md-size justify-content-center">
+            <li><a href="https://www.instagram.com/jay_codes_20/" taget="_blank"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="https://github.com/McKeeJerry-FS" taget="_blank"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/jjerry-mckee-jr/" taget="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+            <li><a href="mailto:jerry.mckee.jr0882@gmail.com" taget="_blank"><i class="far fa-envelope"></i></a></li>
+        </ul>
+        <!-- End Post List  -->
+    </div>
+    <!-- End Single Widget  -->
+    <!-- Start Single Widget  -->
+    @* <div class="axil-single-widget widget widget_instagram mb--30">
+    <h5 class="widget-title">Instagram</h5>
+    <!-- Start Post List  -->
+    <ul class="instagram-post-list-wrapper">
+    <li class="instagram-post-list">
+    <a href="#">
+    <img src="assets/images/small-images/instagram-01.jpg" alt="Instagram Images">
+    </a>
+    </li>
+    <li class="instagram-post-list">
+    <a href="#">
+    <img src="assets/images/small-images/instagram-02.jpg" alt="Instagram Images">
+    </a>
+    </li>
+    <li class="instagram-post-list">
+    <a href="#">
+    <img src="assets/images/small-images/instagram-03.jpg" alt="Instagram Images">
+    </a>
+    </li>
+    <li class="instagram-post-list">
+    <a href="#">
+    <img src="assets/images/small-images/instagram-04.jpg" alt="Instagram Images">
+    </a>
+    </li>
+    <li class="instagram-post-list">
+    <a href="#">
+    <img src="assets/images/small-images/instagram-05.jpg" alt="Instagram Images">
+    </a>
+    </li>
+    <li class="instagram-post-list">
+    <a href="#">
+    <img src="assets/images/small-images/instagram-06.jpg" alt="Instagram Images">
+    </a>
+    </li>
+    </ul>
+    <!-- End Post List  -->
+    </div> *@
+    <!-- End Single Widget  -->
+</div>
+<!-- End Sidebar Area  -->
