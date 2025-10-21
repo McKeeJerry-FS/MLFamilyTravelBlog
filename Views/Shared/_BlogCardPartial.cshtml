@@ -1,4 +1,4 @@
-﻿S@model BlogPost
+﻿@model MLFamilyTravelBlog.Models.BlogPost
 @using MLFamilyTravelBlog.Models.Enums
 @using MLFamilyTravelBlog.Services.Interfaces
 @inject IImageService _ImageService
@@ -36,12 +36,12 @@
                         </a>
                     </h6>
                     <ul class="post-meta-list">
-                        <li>@Model?.CreatedDate.ToString("MMM dd, yyyy")</li>
+                        <li>@(Model != null ? Model.Created.ToString("MMM dd, yyyy") : string.Empty)</li>
                         <li>@Model?.Comments?.Count()</li>
                         <li>
                             <span id="numLikes">
                                 @{
-                                    var likesCount = (Model!.Likes as IEnumerable<dynamic>)?.Where(l => l.IsLiked == true).Count() ?? 0;
+                                    var likesCount = Model?.Likes?.Count(l => l.IsLiked) ?? 0;
                                 }
                                 @likesCount Likes
                             </span>

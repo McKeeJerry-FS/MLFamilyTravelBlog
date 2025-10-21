@@ -4,6 +4,9 @@
     BlogUser? blogUser = await _userManager.GetUserAsync(User);
 }
 
+<!-- make the login/register UI show by rendering the shared login partial -->
+<partial name="_LoginPartial" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

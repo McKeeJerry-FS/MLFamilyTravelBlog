@@ -1,2 +1,4 @@
-﻿<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "BlogPosts", new { area = "" })">
+﻿@* small partial that supplies a POST logout form the layout can submit via JS *@
+<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
+    @Html.AntiForgeryToken()
 </form>
