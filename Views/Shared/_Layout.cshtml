@@ -4,9 +4,6 @@
     BlogUser? blogUser = await _userManager.GetUserAsync(User);
 }
 
-<!-- make the login/register UI show by rendering the shared login partial -->
-<partial name="_LoginPartial" />
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -522,9 +519,6 @@
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         });
     </script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
