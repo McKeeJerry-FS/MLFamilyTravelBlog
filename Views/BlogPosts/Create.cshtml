@@ -44,8 +44,8 @@
 
 <div class="post-single-wrapper axil-section-gap bg-color-white">
     <div class="container">
-        <h1>Create New Blog Post</h1>
-        <p class="text-muted">Create a new blog post or save it as a draft for later.</p>
+        <h1 class="text-white">Create New Blog Post</h1>
+        <p class="text-secondary">Create a new blog post or save it as a draft for later.</p>
     </div>
     <hr />
     <main class="container mt-5">
@@ -65,7 +65,7 @@
                                class="form-control mt-3 pt-2 border border-1 border-secondary" 
                                accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
-                        <small class="form-text text-muted">Recommended: 800x500px or larger</small>
+                        <small class="form-text text-secondary">Recommended: 800x500px or larger</small>
                     </div>
                     
                     <div class="form-group mb-3">
@@ -81,7 +81,7 @@
                                   rows="3" 
                                   placeholder="Brief description of your post..."></textarea>
                         <span asp-validation-for="Abstract" class="text-danger"></span>
-                        <small class="form-text text-muted">This will appear in the post preview</small>
+                        <small class="form-text text-secondary">This will appear in the post preview</small>
                     </div>
                     
                     <div class="form-group mb-3">
@@ -93,13 +93,13 @@
                     </div>
                     
                     <div class="form-group mb-3">
-                        <label asp-for="Tags" class="control-label fw-bold">Tags</label>
+                        <label asp-for="Tags" class="control-label fw-bold text-secondary">Tags</label>
                         <select name="Selected" 
                                 class="form-select border border-1 border-secondary" 
                                 asp-items="ViewBag.Tags" 
                                 size="5" 
                                 multiple></select>
-                        <small class="form-text text-muted">Hold Ctrl (or Cmd) to select multiple tags</small>
+                        <small class="form-text text-secondary">Hold Ctrl (or Cmd) to select multiple tags</small>
                     </div>
                 </div>
                 

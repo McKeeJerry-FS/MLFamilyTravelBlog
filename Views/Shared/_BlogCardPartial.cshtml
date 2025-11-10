@@ -2,14 +2,113 @@
 @using MLFamilyTravelBlog.Models.Enums
 @using MLFamilyTravelBlog.Services.Interfaces
 @inject IImageService _ImageService
+@inject UserManager<BlogUser> _UserManager
 
-<div class="content-block post-list-view mt--30">
+<style>
+    .meta-badge-small {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        color: white;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+        transition: transform 0.2s ease;
+    }
+    
+    .meta-badge-small:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .meta-badge-small i {
+        font-size: 0.75rem;
+    }
+    
+    /* Posted Date Badge - Blue */
+    .posted-badge-small {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    /* Updated Badge - Purple */
+    .updated-badge-small {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        animation: subtle-pulse 2s ease-in-out infinite;
+    }
+    
+    /* Comments Badge - Green */
+    .comments-badge-small {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    /* Views Badge - Orange */
+    .views-badge-small {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    
+    /* Likes Badge - Red/Pink */
+    .likes-badge-small {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    }
+    
+    /* Tags List Styling - Compact Version */
+    .tags-list-small {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    
+    .tags-list-small li {
+        display: inline-block;
+    }
+    
+    .tags-list-small a {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #333;
+        border-radius: 15px;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tags-list-small a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, #fed6e3 0%, #a8edea 100%);
+    }
+    
+    .tags-list-small a i {
+        font-size: 0.7rem;
+    }
+    
+    @@keyframes subtle-pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.03);
+        }
+    }
+</style>
+
+<div class="content-block post-list-view mt--30 rounded-4">
     <div class="post-thumbnail">
         <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@Model?.Id">
             <img src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage)" alt="Post Images" class="border border-2 border-secondary">
         </a>
-@*         <a class="video-popup icon-color-secondary size-medium position-top-center" href="post-details.html"><span class="play-icon"></span></a>
- *@    </div>
+    </div>
     <div class="post-content">
         <div class="post-cat">
             <div class="post-cat-list">
@@ -31,16 +130,41 @@
                     <h6 class="post-author-name">
                         <a class="hover-flip-item-wrapper" href="author.html">
                             <span class="hover-flip-item">
-                                <span data-text="Jay McKee Jr">Jay McKee Jr</span>
+                                <span data-text="@Model?.Author?.FullName">@Model?.Author?.FullName</span>
                             </span>
                         </a>
                     </h6>
                     <ul class="post-meta-list">
-                        <li>@(Model != null ? Model.Created.ToString("MMM dd, yyyy") : string.Empty)</li>
-                        <li>@Model?.Comments?.Count() Comments</li>
-                        <li><strong>Views:</strong> @(Model?.ViewCount ?? 0)</li>
                         <li>
-                            <span id="numLikes">
+                            <span class="meta-badge-small posted-badge-small">
+                                <i class="far fa-calendar-alt"></i>
+                                @(Model != null ? Model.Created.ToString("MMM dd, yyyy") : string.Empty)
+                            </span>
+                        </li>
+                        @if (Model?.Updated != null && Model.Updated != Model.Created)
+                        {
+                            <li>
+                                <span class="meta-badge-small updated-badge-small">
+                                    <i class="fas fa-sync-alt"></i>
+                                    @Model.Updated.Value.ToString("MMM dd, yyyy")
+                                </span>
+                            </li>
+                        }
+                        <li>
+                            <span class="meta-badge-small comments-badge-small">
+                                <i class="far fa-comment-dots"></i>
+                                @Model?.Comments?.Count() Comments
+                            </span>
+                        </li>
+                        <li>
+                            <span class="meta-badge-small views-badge-small">
+                                <i class="far fa-eye"></i>
+                                @(Model?.ViewCount ?? 0) Views
+                            </span>
+                        </li>
+                        <li>
+                            <span class="meta-badge-small likes-badge-small">
+                                <i class="far fa-heart"></i>
                                 @{
                                     var likesCount = Model?.Likes?.Count(l => l.IsLiked) ?? 0;
                                 }
@@ -50,14 +174,21 @@
                     </ul>
                 </div>
             </div>
-            <ul class=" justify-content-end">
-                @foreach (Tag tag in Model!.Tags)
-                {
-                    <li>
-                        <a href="#" class="badge rounded-pill border border-1 bg-primary text-light fw-normal">@tag.Name</a>
-                    </li>
-                }
-            </ul>
+            <!-- Tags as Unordered List -->
+            @if (Model?.Tags != null && Model.Tags.Any())
+            {
+                <ul class="tags-list-small">
+                    @foreach (Tag tag in Model.Tags)
+                    {
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-tag"></i>
+                                @tag.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
         </div>
     </div>
 </div>
