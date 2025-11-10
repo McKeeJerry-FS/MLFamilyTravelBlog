@@ -108,6 +108,30 @@ namespace MLFamilyTravelBlog.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             [StringLength(50, ErrorMessage = "Last Name cannot be longer than 50 characters or less than 2 characters.", MinimumLength = 2)]
             public string LastName { get; set; }
+
+            [StringLength(1000, ErrorMessage = "Bio cannot be longer than 1000 characters.")]
+            [Display(Name = "Bio (Optional)")]
+            [DataType(DataType.MultilineText)]
+            public string? Bio { get; set; }
+
+            [StringLength(100, ErrorMessage = "Job title cannot be longer than 100 characters.")]
+            [Display(Name = "Job Title (Optional)")]
+            public string? JobTitle { get; set; }
+
+            [StringLength(200)]
+            [Display(Name = "LinkedIn URL (Optional)")]
+            [Url]
+            public string? LinkedInUrl { get; set; }
+
+            [StringLength(200)]
+            [Display(Name = "GitHub URL (Optional)")]
+            [Url]
+            public string? GitHubUrl { get; set; }
+
+            [StringLength(200)]
+            [Display(Name = "Twitter URL (Optional)")]
+            [Url]
+            public string? TwitterUrl { get; set; }
         }
 
 
@@ -127,6 +151,11 @@ namespace MLFamilyTravelBlog.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.Bio = Input.Bio;
+                user.JobTitle = Input.JobTitle;
+                user.LinkedInUrl = Input.LinkedInUrl;
+                user.GitHubUrl = Input.GitHubUrl;
+                user.TwitterUrl = Input.TwitterUrl;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

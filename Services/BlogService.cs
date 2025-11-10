@@ -163,6 +163,7 @@ namespace MLFamilyTravelBlog.Services
                 {
                     BlogPost? blogPost = await _context.BlogPosts
                         .Include(b => b.Category)
+                        .Include(b => b.Author)  // Add this line
                         .Include(b => b.Comments)
                             .ThenInclude(b => b.Author)
                         .Include(b => b.Tags)
@@ -220,6 +221,7 @@ namespace MLFamilyTravelBlog.Services
             {
                 BlogPost? blogPost = await _context.BlogPosts
                        .Include(b => b.Category)
+                       .Include(b => b.Author)  // Add this line
                        .Include(b => b.Comments)
                            .ThenInclude(b => b.Author)
                        .FirstOrDefaultAsync(m => m.Id == id);
@@ -233,8 +235,11 @@ namespace MLFamilyTravelBlog.Services
             {
                 BlogPost? blogPost = await _context.BlogPosts
                        .Include(b => b.Category)
+                       .Include(b => b.Author)  // Add this line
                        .Include(b => b.Comments)
                            .ThenInclude(b => b.Author)
+                       .Include(b => b.Likes)
+                       .Include(b => b.Tags)
                        .FirstOrDefaultAsync(m => m.Slug == slug && m.IsPublished == true && m.IsArchived == false);
 
                 return blogPost!;

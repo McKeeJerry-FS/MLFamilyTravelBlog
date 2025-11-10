@@ -24,15 +24,13 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 
 await DataUtility.ManageDataAsync(scope.ServiceProvider);
-
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -62,5 +60,6 @@ app.MapControllerRoute(
 app.MapRazorPages()
    .WithStaticAssets();
 
-
 app.Run();
+
+

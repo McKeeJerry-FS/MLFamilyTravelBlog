@@ -15,6 +15,35 @@ namespace MLFamilyTravelBlog.Models
         [Display(Name = "Last Name")]
         [StringLength(50, ErrorMessage = "Last Name cannot be longer than 50 characters or less than 2 characters.", MinimumLength = 2)]
         public string LastName { get; set; } = string.Empty;
+
+        [StringLength(1000, ErrorMessage = "Bio cannot be longer than 1000 characters.")]
+        [Display(Name = "Bio")]
+        public string? Bio { get; set; }
+
+        [StringLength(100, ErrorMessage = "Job title cannot be longer than 100 characters.")]
+        [Display(Name = "Job Title")]
+        public string? JobTitle { get; set; }
+
+        [StringLength(200)]
+        [Display(Name = "Facebook URL")]
+        public string? FacebookUrl { get; set; }
+
+        [StringLength(200)]
+        [Display(Name = "Instagram URL")]
+        public string? InstagramUrl { get; set; }
+
+        [StringLength(200)]
+        [Display(Name = "Twitter URL")]
+        public string? TwitterUrl { get; set; }
+
+        [StringLength(200)]
+        [Display(Name = "LinkedIn URL")]
+        public string? LinkedInUrl { get; set; }
+
+        [StringLength(200)]
+        [Display(Name = "GitHub URL")]
+        public string? GitHubUrl { get; set; }
+
         [NotMapped]
         public string? FullName { get 
             {

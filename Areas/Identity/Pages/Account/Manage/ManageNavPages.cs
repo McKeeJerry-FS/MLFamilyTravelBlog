@@ -5,7 +5,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace  MLFamilyTravelBlog.Areas.Identity.Pages.Account.Manage
+namespace MLFamilyTravelBlog.Areas.Identity.Pages.Account.Manage
 {
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -62,6 +62,11 @@ namespace  MLFamilyTravelBlog.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
         /// <summary>
+        ///     Profile page for user bio and social media links
+        /// </summary>
+        public static string Profile => "Profile";
+
+        /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
@@ -108,6 +113,11 @@ namespace  MLFamilyTravelBlog.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+
+        /// <summary>
+        ///     Profile page navigation class
+        /// </summary>
+        public static string ProfileNavClass(ViewContext viewContext) => PageNavClass(viewContext, Profile);
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

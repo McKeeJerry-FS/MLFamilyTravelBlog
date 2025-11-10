@@ -1,91 +1,156 @@
 ﻿@model MLFamilyTravelBlog.Models.BlogPost
 @using MLFamilyTravelBlog.Models.Enums
-@inject MLFamilyTravelBlog.Services.ImageService _ImageService
+@inject MLFamilyTravelBlog.Services.Interfaces.IImageService _ImageService
 
 <style>
     .ck-editor__editable_inline {
         min-height: 300px;
     }
+    
+    .publish-toggle {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        margin-bottom: 15px;
+    }
+    
+    .publish-checkbox {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+    
+    .publish-label {
+        font-weight: 500;
+        margin: 0;
+        cursor: pointer;
+        font-size: 1.1rem;
+    }
+    
+    .publish-info {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin: 0;
+    }
 </style>
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Blog Post";
 }
 
-<h1>Edit</h1>
-
-<h4>BlogPost</h4>
-<hr />
 <div class="post-single-wrapper axil-section-gap bg-color-white">
     <div class="container">
-        <h1>Create</h1>
-
-        <h4>BlogPost</h4>
+        <h1>Edit Blog Post</h1>
+        <p class="text-muted">Update your blog post or change its publication status.</p>
     </div>
     <hr />
     <main class="container mt-5">
 
-        <form asp-action="Create" asp-controller="BlogPosts" method="post" enctype="multipart/form-data">
+        <form asp-action="Edit" asp-controller="BlogPosts" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Created" />
+            <input type="hidden" asp-for="ImageData" />
+            <input type="hidden" asp-for="ImageType" />
+            <input type="hidden" asp-for="AuthorId" />
+            
             <div class="row">
                 <div class="col-12 col-lg-4">
-                    <div class="form-group">
-                        <label asp-for="ImageFile" class="control-label">Blog Post Image</label>
-                        <img class="img-fluid border rounded-3 mb-2 border border-1 border-secondary" style="max-height: 350px;" src="@(_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage))" id="blogImage">
-                        <input asp-for="ImageFile" type="file" class="form-control mt-3 pt-2 border border-1 border-secondary" accept=".png,.jpg,.jpeg,.gif"
+                    <div class="form-group mb-3">
+                        <label asp-for="ImageFile" class="control-label fw-bold">Blog Post Image</label>
+                        <img class="img-fluid border rounded-3 mb-2 border border-1 border-secondary" 
+                             style="max-height: 350px; width: 100%; object-fit: cover;" 
+                             src="@(_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage))" 
+                             id="blogImage">
+                        <input asp-for="ImageFile" 
+                               type="file" 
+                               class="form-control mt-3 pt-2 border border-1 border-secondary" 
+                               accept=".png,.jpg,.jpeg,.gif"
                                onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
+                        <small class="form-text text-muted">Leave empty to keep current image. Recommended: 800x500px or larger</small>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control border border-1 border-secondary" />
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="control-label fw-bold"></label>
+                        <input asp-for="Title" class="form-control border border-1 border-secondary" placeholder="Enter post title..." />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Abstract" class="control-label"></label>
-                        <textarea asp-for="Abstract" class="form-control border border-1 border-secondary" rows="1"></textarea>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Abstract" class="control-label fw-bold"></label>
+                        <textarea asp-for="Abstract" 
+                                  class="form-control border border-1 border-secondary" 
+                                  rows="3" 
+                                  placeholder="Brief description of your post..."></textarea>
                         <span asp-validation-for="Abstract" class="text-danger"></span>
+                        <small class="form-text text-muted">This will appear in the post preview</small>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="CategoryId" class="control-label"></label>
-                        <select asp-for="CategoryId" class="form-control border border-1 border-secondary" asp-items="ViewBag.CategoryId"></select>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="CategoryId" class="control-label fw-bold">Category</label>
+                        <select asp-for="CategoryId" class="form-select border border-1 border-secondary" asp-items="ViewBag.CategoryId">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Tags" class="control-label"></label>
-                        <select name="Selected" class="form-control border border-1 border-secondary" asp-items="ViewBag.Tags" size="5" multiple></select>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Tags" class="control-label fw-bold">Tags</label>
+                        <select name="Selected" 
+                                class="form-select border border-1 border-secondary" 
+                                asp-items="ViewBag.Tags" 
+                                size="5" 
+                                multiple></select>
+                        <small class="form-text text-muted">Hold Ctrl (or Cmd) to select multiple tags</small>
                     </div>
                 </div>
+                
                 <div class="col-12 col-lg-8">
-                    <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
+                    <div class="form-group mb-3">
+                        <label asp-for="Content" class="control-label fw-bold">Content</label>
                         <textarea asp-for="Content" class="editor form-control border border-1 border-secondary" rows="25"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
                 </div>
             </div>
-            <div class="form-group d-flex justify-content-end">
-                <label class="form-check-label me-4 mt-2" asp-for="IsPublished">Publish?</label>
-                <input class="largerCheckbox me-20 border border-1 border-secondary" type="checkbox" asp-for="IsPublished" />
+            
+            <!-- Publish/Draft Toggle Section -->
+            <div class="publish-toggle">
+                <input class="publish-checkbox form-check-input" 
+                       type="checkbox" 
+                       asp-for="IsPublished" 
+                       id="publishCheckbox" />
+                <div class="flex-grow-1">
+                    <label class="publish-label form-check-label" for="publishCheckbox" asp-for="IsPublished">
+                        <i class="fas fa-globe me-2"></i>Publish Post
+                    </label>
+                    <p class="publish-info mb-0" id="publishStatus">
+                        <i class="fas fa-info-circle"></i> Unchecked = Save as Draft | Checked = Published
+                    </p>
+                </div>
                 <span asp-validation-for="IsPublished" class="text-danger"></span>
             </div>
-            <div class="form-group d-flex justify-content-end">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a asp-action="AuthorArea" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save me-2"></i><span id="submitButtonText">Update Post</span>
+                </button>
             </div>
         </form>
-        <div class="form-group mt-5 start-0">
-            <a asp-action="Index">Back</a>
-        </div>
     </main>
-</div>
-
-
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+
 @section Scripts {
     <!--CK Editor-->
     <script src="~/vendor/ckeditor5-40-2/build/ckeditor.js"></script>
@@ -95,5 +160,25 @@
             .catch(error => {
                 console.error(error);
             });
+
+        // Update UI based on publish checkbox state
+        const publishCheckbox = document.getElementById('publishCheckbox');
+        const publishStatus = document.getElementById('publishStatus');
+        const submitButtonText = document.getElementById('submitButtonText');
+
+        function updatePublishUI() {
+            if (publishCheckbox.checked) {
+                publishStatus.innerHTML = '<i class="fas fa-check-circle text-success"></i> This post is <strong>published</strong> and visible to all readers.';
+                submitButtonText.textContent = 'Update & Publish';
+            } else {
+                publishStatus.innerHTML = '<i class="fas fa-file-alt text-warning"></i> This post is saved as a <strong>draft</strong> and won\'t be visible to readers.';
+                submitButtonText.textContent = 'Update as Draft';
+            }
+        }
+
+        publishCheckbox.addEventListener('change', updatePublishUI);
+        
+        // Initialize on page load
+        updatePublishUI();
     </script>
 }

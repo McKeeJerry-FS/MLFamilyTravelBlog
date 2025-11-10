@@ -28,6 +28,11 @@ namespace MLFamilyTravelBlog.Models
         public int CategoryId { get; set; }
         public int ViewCount { get; set; }
 
+        // Author Foreign Key
+        [Required]
+        [Display(Name = "Author")]
+        public string AuthorId { get; set; } = string.Empty;
+
         // Image Properties
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
@@ -36,11 +41,11 @@ namespace MLFamilyTravelBlog.Models
 
         // Navigation Properties (Singular)
         public virtual Category? Category { get; set; }
+        public virtual BlogUser? Author { get; set; }
 
         // Navigation Properties (Plural)
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
         public virtual ICollection<BlogLike> Likes { get; set; } = new HashSet<BlogLike>();
-
     }
 }
