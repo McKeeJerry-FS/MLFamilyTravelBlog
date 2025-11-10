@@ -1,7 +1,14 @@
 ﻿@inject IImageService _ImageService
 @inject UserManager<BlogUser> _userManager
+@inject ApplicationDbContext _context
+@using MLFamilyTravelBlog.Data
 @{
     BlogUser? blogUser = await _userManager.GetUserAsync(User);
+    bool isSubscribed = false;
+    if (blogUser != null && !string.IsNullOrEmpty(blogUser.Email))
+    {
+        isSubscribed = _context.Subscribers.Any(s => s.Email == blogUser.Email);
+    }
 }
 
 <!DOCTYPE html>
@@ -229,7 +236,14 @@
                                         <div class="dropdown-menu animate__slideInDown">
                                             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><p style="color:black">My Profile</p></a>
                                             <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"><p style="color:black">Logout</p></a>
-                                            <a class="dropdown-item" asp-controller="Subscription" asp-action="Subscribe"><p style="color:black">Subscribe</p></a>
+                                            @if (!isSubscribed)
+                                            {
+                                                <a class="dropdown-item" asp-controller="Subscription" asp-action="Subscribe"><p style="color:black">Subscribe</p></a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item" asp-controller="Subscription" asp-action="Unsubscribe"><p style="color:black">Unsubscribe</p></a>
+                                            }
                                         </div>
                                     }
                                     else
@@ -472,7 +486,7 @@
                         </div>
                         <div class="col-lg-3 col-md-12">
                             <div class="copyright-right text-start text-lg-end mt_md--20 mt_sm--20">
-                                <p class="b3">Tech Pulse © 2023</p>
+                                <p class="b3">McKee Family Travel Blog ©2025</p>
                             </div>
                         </div>
                     </div>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MLFamilyTravelBlog.Data;
 using MLFamilyTravelBlog.Models;
+using System.Security.Claims;
 
 namespace MLFamilyTravelBlog.Controllers
 {
@@ -70,6 +71,40 @@ namespace MLFamilyTravelBlog.Controllers
             ViewData["AuthorId"] = new SelectList(_context.BlogUsers, "Id", "Id", comment.AuthorId);
             ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
             return View(comment);
+        }
+
+        // POST: Comments/Create from BlogPost Details
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(int BlogPostId, string Body, string Slug)
+        {
+            if (string.IsNullOrWhiteSpace(Body))
+            {
+                TempData["Error"] = "Comment body cannot be empty.";
+                return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
+            }
+
+            var comment = new Comment
+            {
+                Body = Body,
+                BlogPostId = BlogPostId,
+                AuthorId = User.FindFirstValue(ClaimTypes.NameIdentifier)!,
+                CreatedAt = DateTimeOffset.UtcNow,
+                Updated = DateTimeOffset.UtcNow
+            };
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Comment posted successfully!";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to post comment.";
+            }
+
+            return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
         }
 
         // GET: Comments/Edit/5

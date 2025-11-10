@@ -59,10 +59,10 @@
                     @Html.Raw(item.Content)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Created.LocalDateTime)
+                    @Html.DisplayFor(modelItem => item.Created)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Updated.LocalDateTime)
+                    @(item.Updated.HasValue ? item.Updated.Value.LocalDateTime.ToString("g") : "")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsArchived)
