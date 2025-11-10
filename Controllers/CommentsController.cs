@@ -56,32 +56,26 @@ namespace MLFamilyTravelBlog.Controllers
         }
 
         // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Handles both admin creation and blog post comments
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Body,CreatedAt,Updated,UpdateReason,AuthorId,BlogPostId")] Comment comment)
+        public async Task<IActionResult> Create(int BlogPostId, string Body, string? Slug)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AuthorId"] = new SelectList(_context.BlogUsers, "Id", "Id", comment.AuthorId);
-            ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
-            return View(comment);
-        }
-
-        // POST: Comments/Create from BlogPost Details
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int BlogPostId, string Body, string Slug)
-        {
+            // Validate input
             if (string.IsNullOrWhiteSpace(Body))
             {
                 TempData["Error"] = "Comment body cannot be empty.";
-                return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
+                
+                // If coming from blog post details, redirect back there
+                if (!string.IsNullOrEmpty(Slug))
+                {
+                    return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
+                }
+                
+                // Otherwise return to create view
+                ViewData["AuthorId"] = new SelectList(_context.BlogUsers, "Id", "Id");
+                ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", BlogPostId);
+                return View();
             }
 
             var comment = new Comment
@@ -93,18 +87,36 @@ namespace MLFamilyTravelBlog.Controllers
                 Updated = DateTimeOffset.UtcNow
             };
 
-            if (ModelState.IsValid)
+            try
             {
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Comment posted successfully!";
+
+                // If Slug is provided, redirect to blog post details
+                if (!string.IsNullOrEmpty(Slug))
+                {
+                    return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
+                }
+
+                // Otherwise redirect to comments index
+                return RedirectToAction(nameof(Index));
             }
-            else
+            catch (Exception)
             {
                 TempData["Error"] = "Failed to post comment.";
+                
+                // If coming from blog post, redirect back
+                if (!string.IsNullOrEmpty(Slug))
+                {
+                    return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
+                }
+                
+                // Otherwise show create view again
+                ViewData["AuthorId"] = new SelectList(_context.BlogUsers, "Id", "Id", comment.AuthorId);
+                ViewData["BlogPostId"] = new SelectList(_context.BlogPosts, "Id", "Content", comment.BlogPostId);
+                return View(comment);
             }
-
-            return RedirectToAction("Details", "BlogPosts", new { slug = Slug });
         }
 
         // GET: Comments/Edit/5
@@ -126,8 +138,6 @@ namespace MLFamilyTravelBlog.Controllers
         }
 
         // POST: Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Body,CreatedAt,Updated,UpdateReason,AuthorId,BlogPostId")] Comment comment)
