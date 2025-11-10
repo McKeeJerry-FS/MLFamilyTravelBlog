@@ -37,7 +37,8 @@
                     </h6>
                     <ul class="post-meta-list">
                         <li>@(Model != null ? Model.Created.ToString("MMM dd, yyyy") : string.Empty)</li>
-                        <li>@Model?.Comments?.Count()</li>
+                        <li>@Model?.Comments?.Count() Comments</li>
+                        <li><strong>Views:</strong> @(Model?.ViewCount ?? 0)</li>
                         <li>
                             <span id="numLikes">
                                 @{
