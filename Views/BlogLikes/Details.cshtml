@@ -112,7 +112,7 @@
                                 <a id="likesButton">
                                     @if (isLiked)
                                     {
-                                        <i id="faThumb" class="fal fa-thumbs-up" style="background-color:#ff993b;color:white;border-color:white"></i>
+                                        <i id="faThumb" class="fal fa-thumbs-up"></i>
 
                                     }
                                     else
@@ -290,10 +290,10 @@
                             let data = result.isLiked;
                             let likes = result.count;
                             if (data == true) {
-                                $("#faThumb").css({ "background-color": "#ff993b", "color": "white", "border-color": "white" });
+                                $("#faThumb").addClass("liked");
                             }
                             else {
-                                $("#faThumb").css({ "background-color": "", "color": "", "border-color": "" });
+                                $("#faThumb").removeClass("liked");
                             }
                             $('#numLikes').html(likes + ' Likes');
 
