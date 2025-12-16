@@ -9,7 +9,7 @@
 <div class="sidebar-inner">
 
     <!-- Start Single Widget  -->
-    <div class="axil-single-widget widget widget_categories mb--30">
+    <div class="axil-single-widget widget widget_categories mb--30 bg-secondary">
         <ul>
             @foreach (Category category in (await _blogService.GetCategoriesAsync()).Take(4))
             {

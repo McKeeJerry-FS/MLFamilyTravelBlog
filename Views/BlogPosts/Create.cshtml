@@ -3,38 +3,310 @@
 @inject IImageService _ImageService
 
 <style>
-    .ck-editor__editable_inline {
-        min-height: 300px;
+    .create-post-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
     }
-    
-    .publish-toggle {
+
+    .page-header {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #512BD4;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .page-header p {
+        font-size: 1.1rem;
+        color: #6c757d;
+        font-weight: 400;
+    }
+
+    .form-card {
+        background: linear-gradient(135deg, #faf8fe 0%, #f9f7fd 100%);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(81, 43, 212, 0.08);
+        border: 1px solid rgba(81, 43, 212, 0.1);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .form-card:hover {
+        box-shadow: 0 8px 30px rgba(81, 43, 212, 0.12);
+    }
+
+    .form-section-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c2c2c;
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid rgba(81, 43, 212, 0.1);
         display: flex;
         align-items: center;
-        gap: 15px;
-        padding: 15px;
-        background-color: transparent;
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
-        margin-bottom: 15px;
+        gap: 10px;
     }
-    
-    .publish-checkbox {
-        width: 20px;
-        height: 20px;
+
+    .form-section-title i {
+        color: #512BD4;
+        font-size: 1.2rem;
+    }
+
+    .modern-form-group {
+        margin-bottom: 28px;
+    }
+
+    .modern-form-label {
+        font-weight: 600;
+        color: #2c2c2c;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+    }
+
+    .modern-form-label i {
+        color: #512BD4;
+        margin-right: 6px;
+    }
+
+    .modern-form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #fdfcff 0%, #faf8fe 100%);
+    }
+
+    .modern-form-control:focus {
+        border-color: #512BD4;
+        box-shadow: 0 0 0 4px rgba(81, 43, 212, 0.1);
+        background: linear-gradient(135deg, #ffffff 0%, #fdfcff 100%);
+        outline: none;
+    }
+
+    .modern-form-control::placeholder {
+        color: #adb5bd;
+    }
+
+    .image-upload-area {
+        position: relative;
+        border: 3px dashed #e0e0e0;
+        border-radius: 16px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f5f2fb 0%, #f9f7fd 100%);
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .image-upload-area:hover {
+        border-color: #512BD4;
+        background: linear-gradient(135deg, #f0edf7 0%, #f5f2fb 100%);
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+        border-radius: 12px;
+    }
+
+    .file-input-wrapper {
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .custom-file-input {
+        display: none;
+    }
+
+    .custom-file-label {
+        display: inline-block;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #512BD4 0%, #6941C6 100%);
+        color: white;
+        border-radius: 10px;
         cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-align: center;
+        width: 100%;
     }
-    
+
+    .custom-file-label:hover {
+        background: linear-gradient(135deg, #4521b5 0%, #5832a8 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(81, 43, 212, 0.3);
+    }
+
+    .custom-file-label i {
+        margin-right: 8px;
+    }
+
+    .form-helper-text {
+        display: block;
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .form-helper-text i {
+        margin-right: 4px;
+    }
+
+    .ck-editor__editable_inline {
+        min-height: 400px;
+        border-radius: 12px;
+    }
+
+    .publish-toggle {
+        background: linear-gradient(135deg, #f5f2fb 0%, #f7f4fc 100%);
+        border: 2px solid rgba(81, 43, 212, 0.2);
+        border-radius: 16px;
+        padding: 24px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .publish-toggle:hover {
+        background: linear-gradient(135deg, #f0edf7 0%, #f3f0f9 100%);
+        border-color: rgba(81, 43, 212, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(81, 43, 212, 0.15);
+    }
+
+    .publish-checkbox {
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        accent-color: #512BD4;
+    }
+
     .publish-label {
-        font-weight: 500;
+        font-weight: 700;
         margin: 0;
         cursor: pointer;
+        font-size: 1.2rem;
+        color: #2c2c2c;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .publish-info {
+        font-size: 0.95rem;
+        color: #6c757d;
+        margin: 8px 0 0 0;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 0;
+    }
+
+    .btn-modern {
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-modern-cancel {
+        background: linear-gradient(135deg, #fdfcff 0%, #faf8fe 100%);
+        color: #6c757d;
+        border: 2px solid rgba(81, 43, 212, 0.2);
+    }
+
+    .btn-modern-cancel:hover {
+        background: linear-gradient(135deg, #f9f7fd 0%, #f5f2fb 100%);
+        color: #495057;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(81, 43, 212, 0.15);
+    }
+
+    .btn-modern-submit {
+        background: linear-gradient(135deg, #512BD4 0%, #6941C6 100%);
+        color: white;
+        padding: 16px 40px;
         font-size: 1.1rem;
     }
-    
-    .publish-info {
+
+    .btn-modern-submit:hover {
+        background: linear-gradient(135deg, #4521b5 0%, #5832a8 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(81, 43, 212, 0.4);
+    }
+
+    .tag-select-info {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 10px;
         font-size: 0.9rem;
-        color: #6c757d;
-        margin: 0;
+        color: #856404;
+    }
+
+    .tag-select-info i {
+        color: #ffc107;
+        margin-right: 6px;
+    }
+
+    select[multiple].modern-form-control {
+        min-height: 150px;
+        background: linear-gradient(135deg, #fdfcff 0%, #faf8fe 100%);
+    }
+
+    select[multiple].modern-form-control option {
+        padding: 10px;
+        border-radius: 6px;
+        margin: 3px;
+    }
+
+    select[multiple].modern-form-control option:checked {
+        background: linear-gradient(135deg, #512BD4 0%, #6941C6 100%);
+        color: white;
+    }
+
+    @@media (max-width: 992px) {
+        .form-card {
+            padding: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-modern {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 
@@ -42,103 +314,151 @@
     ViewData["Title"] = "Create New Blog Post";
 }
 
-<div class="post-single-wrapper axil-section-gap bg-color-white">
-    <div class="container">
-        <h1 class="text-white">Create New Blog Post</h1>
-        <p class="text-secondary">Create a new blog post or save it as a draft for later.</p>
-    </div>
-    <hr />
-    <main class="container mt-5">
+<div class="post-single-wrapper axil-section-gap bg-secondary">
+    <div class="create-post-container">
+        <div class="page-header">
+            <h1><i class="fas fa-pen-fancy"></i> Create New Blog Post</h1>
+            <p>Share your story with the world. Write, format, and publish your content.</p>
+        </div>
 
         <form asp-action="Create" asp-controller="BlogPosts" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="row">
                 <div class="col-12 col-lg-4">
-                    <div class="form-group mb-3">
-                        <label asp-for="ImageFile" class="control-label fw-bold">Blog Post Image</label>
-                        <img class="img-fluid border rounded-3 mb-2 border border-1 border-secondary" 
-                             style="max-height: 350px; width: 100%; object-fit: cover;" 
-                             src="@(_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage))" 
-                             id="blogImage">
-                        <input asp-for="ImageFile" 
-                               type="file" 
-                               class="form-control mt-3 pt-2 border border-1 border-secondary" 
-                               accept=".png,.jpg,.jpeg,.gif"
-                               onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
-                        <small class="form-text text-secondary">Recommended: 800x500px or larger</small>
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label asp-for="Title" class="control-label fw-bold"></label>
-                        <input asp-for="Title" class="form-control border border-1 border-secondary" placeholder="Enter post title..." />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label asp-for="Abstract" class="control-label fw-bold"></label>
-                        <textarea asp-for="Abstract" 
-                                  class="form-control border border-1 border-secondary" 
-                                  rows="3" 
-                                  placeholder="Brief description of your post..."></textarea>
-                        <span asp-validation-for="Abstract" class="text-danger"></span>
-                        <small class="form-text text-secondary">This will appear in the post preview</small>
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label asp-for="CategoryId" class="control-label fw-bold">Category</label>
-                        <select asp-for="CategoryId" class="form-select border border-1 border-secondary" asp-items="ViewBag.CategoryId">
-                            <option value="">-- Select Category --</option>
-                        </select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label asp-for="Tags" class="control-label fw-bold text-secondary">Tags</label>
-                        <select name="Selected" 
-                                class="form-select border border-1 border-secondary" 
-                                asp-items="ViewBag.Tags" 
-                                size="5" 
-                                multiple></select>
-                        <small class="form-text text-secondary">Hold Ctrl (or Cmd) to select multiple tags</small>
+                    <div class="form-card">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-image"></i> Post Details
+                        </h3>
+                        
+                        <div class="modern-form-group">
+                            <label class="modern-form-label">
+                                <i class="fas fa-camera"></i> Featured Image
+                            </label>
+                            <div class="image-upload-area">
+                                <img class="image-preview" 
+                                    src="@(_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage))" 
+                                    id="blogImage"
+                                    alt="Blog post preview">
+                            </div>
+                            <div class="file-input-wrapper">
+                                <input asp-for="ImageFile" 
+                                      type="file" 
+                                      class="custom-file-input" 
+                                      id="imageFileInput"
+                                      accept=".png,.jpg,.jpeg,.gif"
+                                      onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
+                                <label for="imageFileInput" class="custom-file-label">
+                                    <i class="fas fa-cloud-upload-alt"></i> Choose Image
+                                </label>
+                            </div>
+                            <small class="form-helper-text">
+                                <i class="fas fa-info-circle"></i> Recommended: 1200x630px or larger
+                            </small>
+                        </div>
+                        
+                        <div class="modern-form-group">
+                            <label asp-for="Title" class="modern-form-label">
+                                <i class="fas fa-heading"></i> Post Title
+                            </label>
+                            <input asp-for="Title" 
+                                   class="form-control modern-form-control" 
+                                   placeholder="Enter an engaging title..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="modern-form-group">
+                            <label asp-for="Abstract" class="modern-form-label">
+                                <i class="fas fa-align-left"></i> Abstract
+                            </label>
+                            <textarea asp-for="Abstract" 
+                                      class="form-control modern-form-control" 
+                                      rows="4" 
+                                      placeholder="Write a brief summary that will appear in post previews..."></textarea>
+                            <span asp-validation-for="Abstract" class="text-danger"></span>
+                            <small class="form-helper-text">
+                                <i class="fas fa-lightbulb"></i> This appears in search results and post cards
+                            </small>
+                        </div>
+                        
+                        <div class="modern-form-group">
+                            <label asp-for="CategoryId" class="modern-form-label">
+                                <i class="fas fa-folder"></i> Category
+                            </label>
+                            <select asp-for="CategoryId" 
+                                    class="form-select modern-form-control" 
+                                    asp-items="ViewBag.CategoryId">
+                                <option value="">-- Select a Category --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="modern-form-group">
+                            <label class="modern-form-label">
+                                <i class="fas fa-tags"></i> Tags
+                            </label>
+                            <select name="Selected" 
+                                    class="form-select modern-form-control" 
+                                    asp-items="ViewBag.Tags" 
+                                    size="5" 
+                                    multiple></select>
+                            <div class="tag-select-info">
+                                <i class="fas fa-hand-pointer"></i> Hold <kbd>Ctrl</kbd> (or <kbd>Cmd</kbd> on Mac) to select multiple tags
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="col-12 col-lg-8">
-                    <div class="form-group mb-3">
-                        <label asp-for="Content" class="control-label fw-bold">Content</label>
-                        <textarea asp-for="Content" class="editor form-control border border-1 border-secondary" rows="25"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
+                    <div class="form-card">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-edit"></i> Post Content
+                        </h3>
+                        <div class="modern-form-group">
+                            <label asp-for="Content" class="modern-form-label">
+                                <i class="fas fa-keyboard"></i> Write Your Story
+                            </label>
+                            <textarea asp-for="Content" 
+                                      class="editor form-control modern-form-control" 
+                                      rows="25"></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                            <small class="form-helper-text">
+                                <i class="fas fa-magic"></i> Use the rich text editor to format your content with images, links, and more
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Publish/Draft Toggle Section -->
             <div class="publish-toggle">
-                <input class="publish-checkbox form-check-input" 
+                <input class="publish-checkbox" 
                        type="checkbox" 
                        asp-for="IsPublished" 
                        id="publishCheckbox" />
                 <div class="flex-grow-1">
-                    <label class="publish-label form-check-label" for="publishCheckbox" asp-for="IsPublished">
-                        <i class="fas fa-globe me-2"></i>Publish Post Immediately
+                    <label class="publish-label" for="publishCheckbox">
+                        <i class="fas fa-globe"></i>
+                        <span>Publish Post Immediately</span>
                     </label>
-                    <p class="publish-info mb-0" id="publishStatus">
+                    <p class="publish-info" id="publishStatus">
                         <i class="fas fa-info-circle"></i> Unchecked = Save as Draft | Checked = Publish Now
                     </p>
                 </div>
                 <span asp-validation-for="IsPublished" class="text-danger"></span>
             </div>
             
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <a asp-action="AuthorArea" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Cancel
+            <div class="action-buttons">
+                <a asp-action="AuthorArea" class="btn btn-modern btn-modern-cancel">
+                    <i class="fas fa-times"></i> Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="fas fa-save me-2"></i><span id="submitButtonText">Create Post</span>
+                <button type="submit" class="btn btn-modern btn-modern-submit">
+                    <i class="fas fa-paper-plane"></i>
+                    <span id="submitButtonText">Create Post</span>
                 </button>
             </div>
         </form>
-    </main>
+    </div>
 </div>
 
 @{
