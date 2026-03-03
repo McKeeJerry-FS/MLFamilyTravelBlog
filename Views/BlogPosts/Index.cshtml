@@ -6,72 +6,226 @@
     string? searchString = ViewBag.Search;
 }
 
-<!-- Start Author Area  -->
-<partial name="_AuthorAreaPartial" />
-<!-- End Author Area  -->
-<!-- Start Post List Wrapper  -->
-<div class="axil-post-list-area axil-section-gap bg-secondary">
+<!-- Modern Hero Section with Gradient -->
+<section class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 0 3rem;">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-title">
-                    @if (string.IsNullOrEmpty(searchString))
-                    {
-                        <h2 class="title text-color-purple mb--40">Welcome to The McKee Family Travel Blog!</h2>
-                    }
-                    else
-                    {
-                        <h2 class="title text-color-purple mb--40">Search Results for '@searchString'!</h2>
-                    }
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                @if (string.IsNullOrEmpty(searchString))
+                {
+                    <h1 class="display-4 fw-bold text-white mb-3 animate__animated animate__fadeInDown">
+                        <i class="fas fa-globe-americas me-3"></i>Welcome to The McKee Family Travel Blog
+                    </h1>
+                    <p class="lead text-white-50 mb-4">Discover amazing travel stories, tips, and adventures from around the world</p>
+                }
+                else
+                {
+                    <h1 class="display-5 fw-bold text-white mb-3">
+                        <i class="fas fa-search me-3"></i>Search Results
+                    </h1>
+                    <p class="lead text-white mb-4">
+                        Found <span class="badge bg-white text-primary fs-6">@Model.TotalItemCount</span> results for 
+                        <span class="fw-bold">"@searchString"</span>
+                    </p>
+                }
+
+                <!-- Breadcrumb Navigation -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center bg-transparent">
+                        <li class="breadcrumb-item"><a href="/" class="text-white text-decoration-none"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item active text-white-50" aria-current="page">Blog Posts</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative Wave -->
+    <div class="position-absolute bottom-0 start-0 w-100" style="height: 50px; overflow: hidden;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" style="fill: #f8f9fa;"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Author Area -->
+<partial name="_AuthorAreaPartial" />
+
+<!-- Start Post List Wrapper with Modern Design -->
+<div class="post-list-area py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <!-- Stats Bar -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <p class="mb-0 text-muted">
+                                    <i class="fas fa-newspaper me-2 text-primary"></i>
+                                    Showing <strong>@Model.Count</strong> of <strong>@Model.TotalItemCount</strong> posts
+                                </p>
+                            </div>
+                            <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                                @if (!string.IsNullOrEmpty(searchString))
+                                {
+                                    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-times me-1"></i> Clear Search
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Start Post List  -->
+        <div class="row">
+            <!-- Start Post List with Modern Cards -->
             <div class="col-lg-8 col-xl-8">
-                @* [List Blogs] *@
-                @foreach (BlogPost blogPost in Model)
+                @if (Model.Any())
                 {
-                    <!-- blog card partial start  -->
-                    <partial name="_BlogCardPartial" model="blogPost" />
-                    <!-- blog card partial end  -->
+                    @foreach (BlogPost blogPost in Model)
+                    {
+                        <!-- Modern blog card with hover effects -->
+                        <div class="mb-4">
+                            <partial name="_BlogCardPartial" model="blogPost" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!-- Empty State -->
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-search fa-4x text-muted opacity-50"></i>
+                        </div>
+                        <h3 class="text-muted">No posts found</h3>
+                        <p class="text-muted">Try adjusting your search or browse all posts.</p>
+                        <a asp-action="Index" class="btn btn-primary mt-3">
+                            <i class="fas fa-home me-2"></i>Browse All Posts
+                        </a>
+                    </div>
                 }
             </div>
             <!-- End Post List  -->
-            <!-- Start Sidebar Area  -->
-            <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
-                <partial name="_SideBarPartial" />
-            </div>
 
-            <!-- End Sidebar Area  -->
-            <!-- Pagination Code Start-->
-
-            <div>
-                <div>
-                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            <!-- Start Sidebar Area with Sticky Position -->
+            <div class="col-lg-4 col-xl-4 mt-4 mt-lg-0">
+                <div class="sticky-top" style="top: 20px;">
+                    <partial name="_SideBarPartial" />
                 </div>
-                @if (string.IsNullOrEmpty(searchString))
-                {
-
-                    @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
-                    new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "my-page-item" },
-                        PageClasses = new string[] { "my-page-link" }
-                    })
-                                }
-                else
-                {
-                    @Html.PagedListPager(Model, pageNum => Url.Action("SearchIndex", new { pageNum, searchString }),
-                    new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "my-page-item" },
-                        PageClasses = new string[] { "my-page-link" }
-                    })
-                                }
             </div>
-
-            <!-- Pagination Code End-->
-
+            <!-- End Sidebar Area  -->
         </div>
+
+        <!-- Modern Pagination -->
+        @if (Model.PageCount > 1)
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                                <div class="mb-3 mb-md-0">
+                                    <span class="badge bg-primary fs-6 px-3 py-2">
+                                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                    </span>
+                                </div>
+
+                                <nav aria-label="Blog pagination">
+                                    <ul class="pagination mb-0 flex-wrap justify-content-center">
+                                        @if (string.IsNullOrEmpty(searchString))
+                                        {
+                                            @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
+                                            new PagedListRenderOptions
+                                            {
+                                                LiElementClasses = new string[] { "page-item" },
+                                                PageClasses = new string[] { "page-link" },
+                                                UlElementClasses = new string[] { "pagination", "pagination-modern" }
+                                            })
+                                        }
+                                        else
+                                        {
+                                            @Html.PagedListPager(Model, pageNum => Url.Action("SearchIndex", new { pageNum, searchString }),
+                                            new PagedListRenderOptions
+                                            {
+                                                LiElementClasses = new string[] { "page-item" },
+                                                PageClasses = new string[] { "page-link" },
+                                                UlElementClasses = new string[] { "pagination", "pagination-modern" }
+                                            })
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
+</div>
 <!-- End Post List Wrapper  -->
+
+<style>
+    /* Modern Hero Animations */
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate__animated {
+        animation-duration: 0.8s;
+    }
+
+    .animate__fadeInDown {
+        animation-name: fadeInDown;
+    }
+
+    /* Modern Pagination Styles */
+    .pagination-modern .page-link {
+        border-radius: 50%;
+        margin: 0 4px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #dee2e6;
+        color: #667eea;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-modern .page-link:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .pagination-modern .page-item.active .page-link {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .pagination-modern .page-item.disabled .page-link {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Breadcrumb Styling */
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 1.2rem;
+    }
+</style>

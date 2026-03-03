@@ -12,7 +12,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,27 +27,431 @@
     <link rel="stylesheet" href="~/assets/css/plugins/plugins.css">
     <link rel="stylesheet" href="~/assets/css/style.css">
     <link rel="stylesheet" href="~/css/site.css">
+
+    <style>
+        /* True Dark Mode Styles */
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: linear-gradient(135deg, #f5f2fb 0%, #f7f4fc 50%, #f9f6fd 100%);
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-muted: #adb5bd;
+            --border-color: #e9ecef;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(102, 126, 234, 0.2);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-card: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Colors */
+            --bg-primary: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+            --bg-secondary: #1a1a2e;
+            --bg-card: #252541;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --text-muted: #6c757d;
+            --border-color: #3a3a4e;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(102, 126, 234, 0.4);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-card: linear-gradient(135deg, #2a2a3e 0%, #323252 100%);
+        }
+
+        /* Apply dark mode to body and main elements */
+        body {
+            background: var(--bg-primary) !important;
+            background-attachment: fixed !important;
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%) !important;
+        }
+
+        .main-wrapper {
+            background: transparent !important;
+        }
+
+        /* Cards and containers - IMPORTANT: Override inline styles */
+        [data-theme="dark"] .bg-color-white,
+        [data-theme="dark"] .axil-post-list-area,
+        [data-theme="dark"] .modern-blog-card,
+        [data-theme="dark"] .tag-card,
+        [data-theme="dark"] .category-card,
+        [data-theme="dark"] .admin-actions-card,
+        [data-theme="dark"] .content-block,
+        [data-theme="dark"] .card {
+            background: #252541 !important;
+            color: var(--text-primary);
+            border-color: #3a3a4e !important;
+        }
+
+        /* Override inline background styles on cards */
+        [data-theme="dark"] .card[style*="background"],
+        [data-theme="dark"] div[style*="background: linear-gradient(135deg, #f8f9fa"] {
+            background: linear-gradient(135deg, #2a2a3e 0%, #323252 100%) !important;
+        }
+
+        /* Specific override for stats cards and overview cards */
+        [data-theme="dark"] .card-body,
+        [data-theme="dark"] .overview-stat,
+        [data-theme="dark"] .category-stats {
+            background: linear-gradient(135deg, #2a2a3e 0%, #323252 100%) !important;
+        }
+
+        /* Container backgrounds */
+        [data-theme="dark"] .container,
+        [data-theme="dark"] .post-single-wrapper,
+        [data-theme="dark"] .axil-section-gap {
+            background: #1a1a2e !important;
+        }
+
+        /* Text colors - force override */
+        [data-theme="dark"] h1,
+        [data-theme="dark"] h2,
+        [data-theme="dark"] h3,
+        [data-theme="dark"] h4,
+        [data-theme="dark"] h5,
+        [data-theme="dark"] h6,
+        [data-theme="dark"] .h1,
+        [data-theme="dark"] .h2,
+        [data-theme="dark"] .h3,
+        [data-theme="dark"] .h4,
+        [data-theme="dark"] .h5,
+        [data-theme="dark"] .h6 {
+            color: #e9ecef !important;
+        }
+
+        [data-theme="dark"] .card-title a,
+        [data-theme="dark"] .category-name,
+        [data-theme="dark"] .tag-name,
+        [data-theme="dark"] p,
+        [data-theme="dark"] span,
+        [data-theme="dark"] .title {
+            color: #e9ecef !important;
+        }
+
+        [data-theme="dark"] .text-muted,
+        [data-theme="dark"] .category-description,
+        [data-theme="dark"] .text-secondary {
+            color: #adb5bd !important;
+        }
+
+        /* Quick Actions title - override inline color */
+        [data-theme="dark"] h5[style*="color: #495057"] {
+            color: #e9ecef !important;
+        }
+
+        /* Header and Navigation */
+        [data-theme="dark"] .header,
+        [data-theme="dark"] .header-light,
+        [data-theme="dark"] .bg-secondary {
+            background: #252541 !important;
+            border-bottom: 1px solid #3a3a4e;
+        }
+
+        [data-theme="dark"] .mainmenu a,
+        [data-theme="dark"] .text-dark,
+        [data-theme="dark"] .mainmenu .text-dark {
+            color: #e9ecef !important;
+        }
+
+        [data-theme="dark"] .axil-submenu {
+            background: #252541 !important;
+            border: 1px solid #3a3a4e;
+        }
+
+        [data-theme="dark"] .axil-submenu a {
+            color: #e9ecef !important;
+        }
+
+        /* Footer */
+        [data-theme="dark"] .axil-footer-area {
+            background: #252541 !important;
+            color: #e9ecef;
+        }
+
+        [data-theme="dark"] footer {
+            background: #252541 !important;
+            color: #e9ecef !important;
+            border-top-color: #3a3a4e !important;
+        }
+
+        /* Shadows */
+        [data-theme="dark"] .modern-blog-card,
+        [data-theme="dark"] .tag-card,
+        [data-theme="dark"] .category-card,
+        [data-theme="dark"] .admin-actions-card,
+        [data-theme="dark"] .card {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        [data-theme="dark"] .modern-blog-card:hover,
+        [data-theme="dark"] .tag-card:hover,
+        [data-theme="dark"] .category-card:hover {
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4) !important;
+        }
+
+        /* Stats number colors */
+        [data-theme="dark"] .overview-stat-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        [data-theme="dark"] .category-stat-number {
+            color: #667eea !important;
+        }
+
+        [data-theme="dark"] .fw-bold.text-primary,
+        [data-theme="dark"] .text-primary {
+            color: #667eea !important;
+        }
+
+        [data-theme="dark"] .fw-bold.text-success,
+        [data-theme="dark"] .text-success {
+            color: #20c997 !important;
+        }
+
+        [data-theme="dark"] .fw-bold.text-warning,
+        [data-theme="dark"] .text-warning {
+            color: #ffc107 !important;
+        }
+
+        /* Forms and Inputs */
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] input,
+        [data-theme="dark"] textarea,
+        [data-theme="dark"] select {
+            background: #252541 !important;
+            color: #e9ecef !important;
+            border-color: #3a3a4e !important;
+        }
+
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] input:focus,
+        [data-theme="dark"] textarea:focus {
+            background: #252541 !important;
+            color: #e9ecef !important;
+            border-color: #667eea !important;
+        }
+
+        [data-theme="dark"] .form-control::placeholder,
+        [data-theme="dark"] input::placeholder,
+        [data-theme="dark"] textarea::placeholder {
+            color: #6c757d !important;
+        }
+
+        /* Dropdown menus */
+        [data-theme="dark"] .dropdown-menu {
+            background: #252541 !important;
+            border-color: #3a3a4e !important;
+        }
+
+        [data-theme="dark"] .dropdown-item {
+            color: #e9ecef !important;
+        }
+
+        [data-theme="dark"] .dropdown-item p {
+            color: #e9ecef !important;
+        }
+
+        [data-theme="dark"] .dropdown-item:hover {
+            background: linear-gradient(135deg, #2a2a3e 0%, #323252 100%) !important;
+        }
+
+        /* Mobile menu */
+        [data-theme="dark"] .popup-mobilemenu-area {
+            background: #252541 !important;
+        }
+
+        [data-theme="dark"] .popup-mobilemenu-area .inner {
+            background: #252541 !important;
+        }
+
+        [data-theme="dark"] .popup-mobilemenu-area .mainmenu li a {
+            color: #e9ecef !important;
+        }
+
+        /* Theme Switcher */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Hide old theme switcher */
+        #my_switcher {
+            display: none;
+        }
+
+        /* Breadcrumb in dark mode */
+        [data-theme="dark"] .breadcrumb-item a {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        [data-theme="dark"] .breadcrumb-item.active {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        [data-theme="dark"] .text-white-50 {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        /* Post meta in dark mode */
+        [data-theme="dark"] .post-meta-list li,
+        [data-theme="dark"] .author-name,
+        [data-theme="dark"] .post-meta {
+            color: #adb5bd !important;
+        }
+
+        /* Search */
+        [data-theme="dark"] .header-search-form .form-control {
+            background: #252541 !important;
+            border-color: #3a3a4e !important;
+            color: #e9ecef !important;
+        }
+
+        /* Buttons - keep gradient buttons as is, but fix outline buttons */
+        [data-theme="dark"] .btn-outline-success {
+            color: #20c997 !important;
+            border-color: #20c997 !important;
+        }
+
+        [data-theme="dark"] .btn-outline-success:hover {
+            background: #20c997 !important;
+            color: #fff !important;
+        }
+
+        [data-theme="dark"] .btn-outline-warning {
+            color: #ffc107 !important;
+            border-color: #ffc107 !important;
+        }
+
+        [data-theme="dark"] .btn-outline-warning:hover {
+            background: #ffc107 !important;
+            color: #000 !important;
+        }
+
+        [data-theme="dark"] .btn-outline-danger {
+            color: #dc3545 !important;
+            border-color: #dc3545 !important;
+        }
+
+        [data-theme="dark"] .btn-outline-danger:hover {
+            background: #dc3545 !important;
+            color: #fff !important;
+        }
+
+        [data-theme="dark"] .btn-outline-info {
+            color: #17a2b8 !important;
+            border-color: #17a2b8 !important;
+        }
+
+        [data-theme="dark"] .btn-outline-info:hover {
+            background: #17a2b8 !important;
+            color: #fff !important;
+        }
+
+        [data-theme="dark"] .btn-outline-primary {
+            color: #667eea !important;
+            border-color: #667eea !important;
+        }
+
+        [data-theme="dark"] .btn-outline-primary:hover {
+            background: #667eea !important;
+            color: #fff !important;
+        }
+
+        [data-theme="dark"] .btn-outline-secondary {
+            color: #adb5bd !important;
+            border-color: #adb5bd !important;
+        }
+
+        [data-theme="dark"] .btn-outline-secondary:hover {
+            background: #adb5bd !important;
+            color: #000 !important;
+        }
+
+        /* Category badges */
+        [data-theme="dark"] .category-badge,
+        [data-theme="dark"] .tag-badge {
+            /* Keep gradient for badges */
+            color: white !important;
+        }
+
+        /* Image wrappers - keep as is but ensure proper contrast */
+        [data-theme="dark"] .category-image-wrapper,
+        [data-theme="dark"] .card-image-wrapper {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        /* Labels in stats */
+        [data-theme="dark"] .overview-stat-label,
+        [data-theme="dark"] .category-stat-label,
+        [data-theme="dark"] .stats-label {
+            color: #adb5bd !important;
+        }
+
+        /* Copyright and footer text */
+        [data-theme="dark"] .copyright-area {
+            background: #252541 !important;
+            border-top: 1px solid #3a3a4e;
+        }
+
+        [data-theme="dark"] .copyright-area p,
+        [data-theme="dark"] .copyright-area a {
+            color: #adb5bd !important;
+        }
+
+        /* Pagination */
+        [data-theme="dark"] .my-page-link {
+            background: #252541 !important;
+            color: #e9ecef !important;
+            border-color: #3a3a4e !important;
+        }
+
+        [data-theme="dark"] .my-page-link:hover {
+            background: #667eea !important;
+            color: #fff !important;
+        }
+    </style>
 </head>
 <body>
     <partial name="_logoutPartial" />
+
+    <!-- Modern Theme Toggle Button -->
+    <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
     <div class="main-wrapper">
         <div class="mouse-cursor cursor-outer"></div>
         <div class="mouse-cursor cursor-inner"></div>
-
-        <div id="my_switcher" class="my_switcher">
-            <ul>
-                <li>
-                    <a href="javascript: void(0);" data-theme="light" class="setColor light">
-                        <span title="Light Mode">Light</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
-                        <span title="Dark Mode">Dark</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
 
         <!-- Start Header -->
         <header class="header axil-header header-light header-sticky header-with-shadow bg-secondary">
@@ -532,6 +936,47 @@
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         });
+
+        // True Dark Mode Toggle
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const html = document.documentElement;
+
+            // Check for saved theme preference or default to 'light'
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', currentTheme);
+            updateIcon(currentTheme);
+
+            // Theme toggle click handler
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+
+                // Add animation
+                themeToggle.style.transform = 'rotate(360deg)';
+                setTimeout(() => {
+                    themeToggle.style.transform = 'rotate(0deg)';
+                }, 300);
+            });
+
+            // Update icon based on theme
+            function updateIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    themeToggle.setAttribute('aria-label', 'Switch to Light Mode');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    themeToggle.setAttribute('aria-label', 'Switch to Dark Mode');
+                }
+            }
+        })();
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

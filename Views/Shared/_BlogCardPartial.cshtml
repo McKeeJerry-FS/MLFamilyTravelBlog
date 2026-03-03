@@ -5,236 +5,330 @@
 @inject UserManager<BlogUser> _UserManager
 
 <style>
+    /* Modern Blog Card Styling */
+    .modern-blog-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e9ecef;
+    }
+
+    .modern-blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.2);
+        border-color: #667eea;
+    }
+
+    .modern-blog-card .card-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        height: 320px;
+    }
+
+    .modern-blog-card .card-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .modern-blog-card:hover .card-image-wrapper img {
+        transform: scale(1.08);
+    }
+
+    .modern-blog-card .category-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        z-index: 2;
+    }
+
+    .modern-blog-card .card-content {
+        padding: 2rem;
+    }
+
+    .modern-blog-card .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+
+    .modern-blog-card .card-title a {
+        color: #212529;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .modern-blog-card .card-title a:hover {
+        color: #667eea;
+    }
+
+    .modern-blog-card .author-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .modern-blog-card .author-name {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .modern-blog-card .author-name a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .modern-blog-card .author-name a:hover {
+        color: #667eea;
+    }
+
+    /* Meta Badges - Modern Glassmorphism Style */
     .meta-badge-small {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 12px;
-        background: #f5f5f5;
+        padding: 8px 14px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
         color: #4a4a4a;
-        border-radius: 20px;
+        border-radius: 25px;
         font-size: 0.8rem;
         font-weight: 600;
         white-space: nowrap;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid #e0e0e0;
+        border: 1px solid rgba(0, 0, 0, 0.08);
     }
-    
+
     .meta-badge-small:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        background: #ffffff;
-        border-color: #d0d0d0;
     }
-    
+
     .meta-badge-small i {
         font-size: 0.75rem;
     }
-    
-    /* Posted Date Badge - Blue */
+
+    /* Posted Date Badge - Blue Gradient */
     .posted-badge-small {
-        background: #e3f2fd;
-        color: #1976d2;
-        border-color: #bbdefb;
-    }
-    
-    .posted-badge-small:hover {
-        background: #bbdefb;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
         color: #1565c0;
+        border-color: transparent;
     }
-    
-    /* Updated Badge - Purple */
+
+    .posted-badge-small:hover {
+        background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+    }
+
+    /* Updated Badge - Purple Gradient */
     .updated-badge-small {
-        background: #f3e5f5;
-        color: #7b1fa2;
-        border-color: #e1bee7;
-    }
-    
-    .updated-badge-small:hover {
-        background: #e1bee7;
+        background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
         color: #6a1b9a;
+        border-color: transparent;
     }
-    
-    /* Comments Badge - Green */
+
+    .updated-badge-small:hover {
+        background: linear-gradient(135deg, #e1bee7 0%, #ce93d8 100%);
+    }
+
+    /* Comments Badge - Green Gradient */
     .comments-badge-small {
-        background: #e8f5e9;
-        color: #388e3c;
-        border-color: #c8e6c9;
-    }
-    
-    .comments-badge-small:hover {
-        background: #c8e6c9;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
         color: #2e7d32;
+        border-color: transparent;
     }
-    
-    /* Views Badge - Amber */
+
+    .comments-badge-small:hover {
+        background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+    }
+
+    /* Views Badge - Amber Gradient */
     .views-badge-small {
-        background: #fff3e0;
-        color: #f57c00;
-        border-color: #ffe0b2;
-    }
-    
-    .views-badge-small:hover {
-        background: #ffe0b2;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
         color: #e65100;
+        border-color: transparent;
     }
-    
-    /* Likes Badge - Red */
+
+    .views-badge-small:hover {
+        background: linear-gradient(135deg, #ffe0b2 0%, #ffcc80 100%);
+    }
+
+    /* Likes Badge - Red Gradient */
     .likes-badge-small {
-        background: #ffebee;
-        color: #d32f2f;
-        border-color: #ffcdd2;
-    }
-    
-    .likes-badge-small:hover {
-        background: #ffcdd2;
+        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
         color: #c62828;
+        border-color: transparent;
     }
-    
-    /* Tags List Styling - Modern Version */
+
+    .likes-badge-small:hover {
+        background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%);
+    }
+
+    /* Tags List - Modern Pills */
     .tags-list-small {
         list-style: none;
         padding: 0;
-        margin: 16px 0 0 0;
+        margin: 1rem 0 0 0;
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
     }
-    
+
     .tags-list-small li {
         display: inline-block;
     }
-    
+
     .tags-list-small a {
         display: inline-flex;
         align-items: center;
         gap: 6px;
         padding: 6px 14px;
-        background: #fafafa;
-        color: #424242;
-        border: 1px solid #e0e0e0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #495057;
+        border: 1px solid #dee2e6;
         border-radius: 20px;
         text-decoration: none;
         font-size: 0.8rem;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .tags-list-small a:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        background: #ffffff;
-        color: #0066cc;
-        border-color: #0066cc;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
-    
+
     .tags-list-small a i {
         font-size: 0.7rem;
     }
-    /* Post meta wrapper styling */
-    .post-meta-wrapper {
-        margin-top: 16px;
-    }
-    
+
     .post-meta-list {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
         list-style: none;
         padding: 0;
-        margin: 12px 0 0 0;
+        margin: 0;
     }
-    
-    .post-author-name {
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #2c2c2c;
-    }
-    
-    .post-author-name a {
-        color: inherit;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    
-    .post-author-name a:hover {
-        color: #0066cc;
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .modern-blog-card .card-image-wrapper {
+            height: 220px;
+        }
+
+        .modern-blog-card .card-content {
+            padding: 1.5rem;
+        }
+
+        .modern-blog-card .card-title {
+            font-size: 1.25rem;
+        }
     }
 </style>
 
-<div class="content-block post-list-view mt--30 rounded-4">
-    <div class="post-thumbnail">
+<!-- Modern Blog Card with Enhanced Design -->
+<div class="modern-blog-card">
+    <!-- Card Image with Overlay -->
+    <div class="card-image-wrapper">
         <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@Model?.Id">
-            <img src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage)" alt="Post Images" class="border border-2 border-secondary">
+            <img src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType, DefaultImage.BlogPostImage)" 
+                 alt="@Model?.Title" 
+                 loading="lazy">
         </a>
+
+        <!-- Category Badge Overlay -->
+        <span class="category-badge">
+            <i class="fas fa-folder-open me-1"></i>
+            @Model?.Category?.Name
+        </span>
     </div>
-    <div class="post-content">
-        <div class="post-cat">
-            <div class="post-cat-list">
-                <a class="hover-flip-item-wrapper" href="#">
-                    <span class="hover-flip-item">
-                        <span data-text="@Model?.Category?.Name">@Model?.Category?.Name</span>
-                    </span>
-                </a>
+
+    <!-- Card Content -->
+    <div class="card-content">
+        <!-- Author Info -->
+        <div class="author-info">
+            <div>
+                <p class="author-name mb-0">
+                    <i class="fas fa-user-circle me-2 text-primary"></i>
+                    <a href="#">@Model?.Author?.FullName</a>
+                </p>
             </div>
         </div>
-        <h4 class="title">
+
+        <!-- Post Title -->
+        <h4 class="card-title">
             <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@Model?.Id">
                 @Model?.Title
             </a>
         </h4>
+
+        <!-- Meta Information -->
         <div class="post-meta-wrapper">
-            <div class="post-meta">
-                <div class="content">
-                    <h6 class="post-author-name">
-                        <a class="hover-flip-item-wrapper" href="author.html">
-                            <span class="hover-flip-item">
-                                <span data-text="@Model?.Author?.FullName">@Model?.Author?.FullName</span>
-                            </span>
-                        </a>
-                    </h6>
-                    <ul class="post-meta-list">
-                        <li>
-                            <span class="meta-badge-small posted-badge-small">
-                                <i class="far fa-calendar-alt"></i>
-                                @(Model != null ? Model.Created.ToString("MMM dd, yyyy") : string.Empty)
-                            </span>
-                        </li>
-                        @if (Model?.Updated != null && Model.Updated != Model.Created)
-                        {
-                            <li>
-                                <span class="meta-badge-small updated-badge-small">
-                                    <i class="fas fa-sync-alt"></i>
-                                    @Model.Updated.Value.ToString("MMM dd, yyyy")
-                                </span>
-                            </li>
+            <ul class="post-meta-list mb-3">
+                <li>
+                    <span class="meta-badge-small posted-badge-small">
+                        <i class="far fa-calendar-alt"></i>
+                        @(Model != null ? Model.Created.ToString("MMM dd, yyyy") : string.Empty)
+                    </span>
+                </li>
+                @if (Model?.Updated != null && Model.Updated != Model.Created)
+                {
+                    <li>
+                        <span class="meta-badge-small updated-badge-small">
+                            <i class="fas fa-sync-alt"></i>
+                            @Model.Updated.Value.ToString("MMM dd, yyyy")
+                        </span>
+                    </li>
+                }
+                <li>
+                    <span class="meta-badge-small comments-badge-small">
+                        <i class="far fa-comment-dots"></i>
+                        @Model?.Comments?.Count()
+                    </span>
+                </li>
+                <li>
+                    <span class="meta-badge-small views-badge-small">
+                        <i class="far fa-eye"></i>
+                        @(Model?.ViewCount ?? 0)
+                    </span>
+                </li>
+                <li>
+                    <span class="meta-badge-small likes-badge-small">
+                        <i class="far fa-heart"></i>
+                        @{
+                            var likesCount = Model?.Likes?.Count(l => l.IsLiked) ?? 0;
                         }
-                        <li>
-                            <span class="meta-badge-small comments-badge-small">
-                                <i class="far fa-comment-dots"></i>
-                                @Model?.Comments?.Count() Comments
-                            </span>
-                        </li>
-                        <li>
-                            <span class="meta-badge-small views-badge-small">
-                                <i class="far fa-eye"></i>
-                                @(Model?.ViewCount ?? 0) Views
-                            </span>
-                        </li>
-                        <li>
-                            <span class="meta-badge-small likes-badge-small">
-                                <i class="far fa-heart"></i>
-                                @{
-                                    var likesCount = Model?.Likes?.Count(l => l.IsLiked) ?? 0;
-                                }
-                                @likesCount Likes
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Tags as Unordered List -->
+                        @likesCount
+                    </span>
+                </li>
+            </ul>
+
+            <!-- Tags -->
             @if (Model?.Tags != null && Model.Tags.Any())
             {
                 <ul class="tags-list-small">

@@ -1,35 +1,206 @@
 ﻿@model IEnumerable<MLFamilyTravelBlog.Models.Tag>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manage Tags";
 }
 
-<h1>Index</h1>
+<style>
+    .tag-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .tag-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        border-color: #667eea;
+    }
+
+    .tag-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #212529;
+        margin-bottom: 1rem;
+    }
+
+    .tag-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .tag-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .tag-action-btn {
+        flex: 1;
+        min-width: 80px;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+        border-width: 2px;
+    }
+
+    .tag-action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .create-tag-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        text-decoration: none;
+    }
+
+    .create-tag-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        color: white;
+    }
+
+    .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        padding: 2rem;
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .stats-number {
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .stats-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-top: 0.5rem;
+    }
+</style>
+
+<!-- Modern Hero Section with Gradient -->
+<section class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 0 3rem;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold text-white mb-3 animate__animated animate__fadeInDown">
+                    <i class="fas fa-tags me-3"></i>Manage Tags
+                </h1>
+                <p class="lead text-white-50 mb-4">Organize your blog posts with tags for better categorization and discovery</p>
+
+                <!-- Breadcrumb Navigation -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center bg-transparent">
+                        <li class="breadcrumb-item"><a href="/" class="text-white text-decoration-none"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a asp-action="AuthorArea" asp-controller="BlogPosts" class="text-white text-decoration-none">Author Area</a></li>
+                        <li class="breadcrumb-item active text-white-50" aria-current="page">Manage Tags</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative Wave -->
+    <div class="position-absolute bottom-0 start-0 w-100" style="height: 50px; overflow: hidden;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" style="fill: #f8f9fa;"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container py-5">
+    <!-- Stats and Create Button -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-8">
+            <div class="stats-card">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="stats-number">@Model.Count()</div>
+                        <div class="stats-label">Total Tags</div>
+                    </div>
+                    <div class="text-end">
+                        <i class="fas fa-tags" style="font-size: 4rem; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <a asp-action="Create" class="create-tag-btn w-100 justify-content-center">
+                <i class="fas fa-plus-circle"></i>
+                Create New Tag
+            </a>
+        </div>
+    </div>
+
+    <!-- Tags Grid -->
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-tags text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
+            <h3 class="mt-4 text-muted">No Tags Yet</h3>
+            <p class="text-muted">Create your first tag to start organizing your blog posts</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="tag-card">
+                        <div class="tag-badge">
+                            <i class="fas fa-tag me-2"></i>Tag
+                        </div>
+                        <div class="tag-name">
+                            @item.Name
+                        </div>
+                        <div class="text-muted mb-3" style="font-size: 0.9rem;">
+                            <i class="fas fa-link me-1"></i>
+                            Used in @item.BlogPosts.Count post(s)
+                        </div>
+                        <div class="tag-actions">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning tag-action-btn">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary tag-action-btn">
+                                <i class="fas fa-eye me-1"></i>Details
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger tag-action-btn">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

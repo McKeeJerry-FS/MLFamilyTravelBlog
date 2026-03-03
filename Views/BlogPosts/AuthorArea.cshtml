@@ -1,136 +1,271 @@
 ﻿@model IPagedList<BlogPost>
 @inject IImageService _ImageService
 
+@{
+    ViewData["Title"] = "Author Area";
+}
+
+<style>
+    /* Modern Admin Card Styling */
+    .admin-actions-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        margin-top: 1.5rem;
+    }
+
+    .status-badge {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-published {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+
+    .status-unpublished {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: white;
+    }
+
+    .status-archived {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+    }
+
+    .admin-btn {
+        border-radius: 8px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-width: 2px;
+    }
+
+    .admin-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .create-post-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .create-post-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    }
+</style>
+
+<!-- Modern Hero Section with Gradient -->
+<section class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 0 3rem;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold text-white mb-3 animate__animated animate__fadeInDown">
+                    <i class="fas fa-user-cog me-3"></i>Author Area
+                </h1>
+                <p class="lead text-white-50 mb-4">Manage your blog posts, track engagement, and control publishing</p>
+
+                <!-- Breadcrumb Navigation -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center bg-transparent">
+                        <li class="breadcrumb-item"><a href="/" class="text-white text-decoration-none"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="BlogPosts" class="text-white text-decoration-none">Blog Posts</a></li>
+                        <li class="breadcrumb-item active text-white-50" aria-current="page">Author Area</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative Wave -->
+    <div class="position-absolute bottom-0 start-0 w-100" style="height: 50px; overflow: hidden;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" style="fill: #f8f9fa;"></path>
+        </svg>
+    </div>
+</section>
+
 <!-- Start Post List Wrapper  -->
 <div class="axil-post-list-area axil-section-gap bg-color-white">
     <div class="container">
-        <a class="axil-button button-rounded btn-primary mb-5" asp-action="Create" asp-controller="BlogPosts">
-            New Blog Post
-        </a>
-        <!-- Start Post List  -->
-        @* BEGIN: show this for each post *@
-        @foreach (BlogPost blogPost in Model)
-        {
-
-            <div class="row my-3">
-                <div class="col-lg-8 col-xl-8">
-                    <div class="content-block post-list-view mt--30">
-                        <div class="post-thumbnail">
-                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
-                                <img src="@_ImageService.ConvertByteArrayToFile(blogPost.ImageData, blogPost.ImageType, DefaultImage.BlogPostImage)"
-                                     alt="Post Image">
-                            </a>
-                        </div>
-                        <div class="post-content">
-                            <div class="post-cat">
-                                <div class="post-cat-list">
-                                    <a class="hover-flip-item-wrapper" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
-                                        <span class="hover-flip-item">
-                                            <span data-text="@blogPost.Category?.Name">@blogPost.Category?.Name</span> @* post category *@
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                            <h4 class="title">
-                                <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
-                                    @blogPost.Title
-                                </a>
-                            </h4>
-                            <div class="post-meta-wrapper">
-                                <div class="post-meta">
-                                    <div class="content">
-                                        <ul class="post-meta-list">
-                                            <li>@blogPost.Created.DateTime.ToLongDateString()</li>
-                                            <li>Comments: @blogPost.Comments.Count</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <ul class="social-share-transparent justify-content-end fw-bold">
-                                    @* BLOG STATUS: show just one of these! *@
-                                    @if (blogPost.IsPublished == true && blogPost.IsArchived == false)
-                                    {
-                                        <li><a class="text-success">Published</a></li>
-                                    }
-                                    else if (blogPost.IsArchived == true)
-                                    {
-                                        <li><a class="text-danger">Deleted</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li><a class="text-warning">Unpublished</a></li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-xl-4">
-                    <div class="content-block post-list-view mt--30 h-100">
-                        <div class="post-content d-flex flex-column gap-3 align-items-center">
-                            @if (blogPost.IsPublished == false)
-                            {
-                                <a class="w-75 btn btn-outline-success"
-                                   asp-action="Publish"
-                                   asp-controller="BlogPosts"
-                                   asp-route-id="@blogPost.Id">
-                                    Publish
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="w-75 btn btn-outline-success"
-                                   asp-action="Unpublish"
-                                   asp-controller="BlogPosts"
-                                   asp-route-id="@blogPost.Id">
-                                    Unpublish
-                                </a>
-                            }
-
-                            <a class="w-75 btn btn-outline-warning"
-                               asp-action="Edit"
-                               asp-controller="BlogPosts"
-                               asp-route-id="@blogPost.Id">
-                                Edit
-                            </a>
-
-                            @if (blogPost.IsArchived == false)
-                            {
-                                <a class="w-75 btn btn-outline-danger"
-                                   asp-action="AdminArchive"
-                                   asp-controller="BlogPosts"
-                                   asp-route-id="@blogPost.Id">
-                                    Archive
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="w-75 btn btn-outline-danger"
-                                   asp-action="Unarchive"
-                                   asp-controller="BlogPosts"
-                                   asp-route-id="@blogPost.Id">
-                                    Unarchive
-                                </a>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        }
-
-
-        <div>
-            <div>
-                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-            </div>
-            @Html.PagedListPager(Model, pageNum => Url.Action("AuthorArea", new { pageNum }),
-            new PagedListRenderOptions
-            {
-                LiElementClasses = new string[] { "my-page-item" },
-                PageClasses = new string[] { "my-page-link" }
-            })
+        <!-- Create New Post Button -->
+        <div class="text-center mb-5">
+            <a class="create-post-btn" asp-action="Create" asp-controller="BlogPosts">
+                <i class="fas fa-plus-circle"></i>
+                Create New Blog Post
+            </a>
         </div>
 
-        <!-- End Post List  -->
+        <!-- Stats Overview -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card border-0 shadow-sm" style="border-radius: 12px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                    <div class="card-body p-4">
+                        <div class="row text-center">
+                            <div class="col-md-4">
+                                <h3 class="fw-bold text-primary mb-1">@Model.TotalItemCount</h3>
+                                <p class="text-muted mb-0">Total Posts</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h3 class="fw-bold text-success mb-1">@Model.Count(p => p.IsPublished && !p.IsArchived)</h3>
+                                <p class="text-muted mb-0">Published</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h3 class="fw-bold text-warning mb-1">@Model.Count(p => !p.IsPublished && !p.IsArchived)</h3>
+                                <p class="text-muted mb-0">Drafts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post List with Admin Actions -->
+        @foreach (BlogPost blogPost in Model)
+        {
+            <div class="row mb-4 align-items-stretch">
+                <div class="col-lg-8">
+                    <!-- Blog Post Card -->
+                    <div class="modern-blog-card h-100">
+                        <div class="card-image-wrapper" style="height: 280px;">
+                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
+                                <img src="@_ImageService.ConvertByteArrayToFile(blogPost.ImageData, blogPost.ImageType, DefaultImage.BlogPostImage)"
+                                     alt="@blogPost.Title"
+                                     style="width: 100%; height: 100%; object-fit: cover;">
+                            </a>
+                            <div class="category-badge">@blogPost.Category?.Name</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h4 class="card-title mb-0" style="flex: 1;">
+                                    <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id" style="text-decoration: none; color: #212529;">
+                                        @blogPost.Title
+                                    </a>
+                                </h4>
+                                @if (blogPost.IsPublished == true && blogPost.IsArchived == false)
+                                {
+                                    <span class="status-badge status-published ms-2">
+                                        <i class="fas fa-check-circle"></i> Published
+                                    </span>
+                                }
+                                else if (blogPost.IsArchived == true)
+                                {
+                                    <span class="status-badge status-archived ms-2">
+                                        <i class="fas fa-archive"></i> Archived
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-unpublished ms-2">
+                                        <i class="fas fa-clock"></i> Draft
+                                    </span>
+                                }
+                            </div>
+                            <div class="d-flex gap-4 text-muted" style="font-size: 0.9rem;">
+                                <span><i class="far fa-calendar me-1"></i> @blogPost.Created.DateTime.ToString("MMM dd, yyyy")</span>
+                                <span><i class="far fa-comments me-1"></i> @blogPost.Comments.Count Comments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <!-- Admin Actions Card -->
+                    <div class="admin-actions-card h-100 d-flex flex-column justify-content-center gap-3">
+                        <h5 class="fw-bold mb-3 text-center" style="color: #495057;">
+                            <i class="fas fa-tasks me-2"></i>Quick Actions
+                        </h5>
+
+                        @if (blogPost.IsPublished == false)
+                        {
+                            <a class="btn btn-outline-success admin-btn w-100"
+                               asp-action="Publish"
+                               asp-controller="BlogPosts"
+                               asp-route-id="@blogPost.Id">
+                                <i class="fas fa-paper-plane me-2"></i>Publish
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-secondary admin-btn w-100"
+                               asp-action="Unpublish"
+                               asp-controller="BlogPosts"
+                               asp-route-id="@blogPost.Id">
+                                <i class="fas fa-pause me-2"></i>Unpublish
+                            </a>
+                        }
+
+                        <a class="btn btn-outline-warning admin-btn w-100"
+                           asp-action="Edit"
+                           asp-controller="BlogPosts"
+                           asp-route-id="@blogPost.Id">
+                            <i class="fas fa-edit me-2"></i>Edit
+                        </a>
+
+                        @if (blogPost.IsArchived == false)
+                        {
+                            <a class="btn btn-outline-danger admin-btn w-100"
+                               asp-action="AdminArchive"
+                               asp-controller="BlogPosts"
+                               asp-route-id="@blogPost.Id">
+                                <i class="fas fa-archive me-2"></i>Archive
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-info admin-btn w-100"
+                               asp-action="Unarchive"
+                               asp-controller="BlogPosts"
+                               asp-route-id="@blogPost.Id">
+                                <i class="fas fa-undo me-2"></i>Unarchive
+                            </a>
+                        }
+
+                        <a class="btn btn-outline-primary admin-btn w-100"
+                           asp-action="Details"
+                           asp-controller="BlogPosts"
+                           asp-route-id="@blogPost.Id">
+                            <i class="fas fa-eye me-2"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Pagination -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex justify-content-center align-items-center flex-column gap-3">
+                    <div class="text-muted">
+                        <i class="fas fa-list me-2"></i>
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                    </div>
+                    @Html.PagedListPager(Model, pageNum => Url.Action("AuthorArea", new { pageNum }),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "my-page-item" },
+                        PageClasses = new string[] { "my-page-link" }
+                    })
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<!-- End Post List Wrapper  -->

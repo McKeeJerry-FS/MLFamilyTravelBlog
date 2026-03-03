@@ -296,7 +296,7 @@ namespace MLFamilyTravelBlog.Controllers
                     var subscribers = _context.Subscribers.Select(s => s.Email).ToList();
                     if (subscribers.Any())
                     {
-                        string subject = $" Tech Pulse New Post alert: {blogPost.Title}";
+                        string subject = $"McKee Family Travel Blog - New Post Alert: {blogPost.Title}";
                         string? url = Url.Action("Details", "BlogPosts", new { id = blogPost.Id }, protocol: Request.Scheme, host: Request.Host.ToString());
                         if (string.IsNullOrEmpty(url))
                         {
