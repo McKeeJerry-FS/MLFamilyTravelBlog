@@ -1,4 +1,4 @@
-﻿using Npgsql;
+﻿﻿using Npgsql;      
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MLFamilyTravelBlog.Models;
@@ -73,6 +73,24 @@ namespace MLFamilyTravelBlog.Data
             string? moderatorEmail = configuration["ModeratorEmail"] ?? Environment.GetEnvironmentVariable("ModeratorEmail");
             string? moderatorPassword = configuration["ModeratorPWD"] ?? Environment.GetEnvironmentVariable("ModeratorPWD");
 
+            // Validate required configuration values
+            if (string.IsNullOrWhiteSpace(adminEmail))
+            {
+                throw new InvalidOperationException("AdminEmail is not configured. Please add it to User Secrets or environment variables.");
+            }
+            if (string.IsNullOrWhiteSpace(adminPassword))
+            {
+                throw new InvalidOperationException("AdminPWD is not configured. Please add it to User Secrets or environment variables.");
+            }
+            if (string.IsNullOrWhiteSpace(moderatorEmail))
+            {
+                throw new InvalidOperationException("ModeratorEmail is not configured. Please add it to User Secrets or environment variables.");
+            }
+            if (string.IsNullOrWhiteSpace(moderatorPassword))
+            {
+                throw new InvalidOperationException("ModeratorPWD is not configured. Please add it to User Secrets or environment variables.");
+            }
+
             try
             {
                 BlogUser? adminUser = new()
@@ -85,13 +103,27 @@ namespace MLFamilyTravelBlog.Data
                 };
 
 
-                BlogUser? blogUser = await userManager.FindByEmailAsync(adminEmail!);
+                BlogUser? blogUser = await userManager.FindByEmailAsync(adminEmail);
 
 
                 if (blogUser == null)
                 {
-                    await userManager.CreateAsync(adminUser, adminPassword!);
-                    await userManager.AddToRoleAsync(adminUser, _adminRole!);
+                    IdentityResult createResult = await userManager.CreateAsync(adminUser, adminPassword);
+                    if (createResult.Succeeded)
+                    {
+                        // Refetch the user from database to ensure we have the persisted entity
+                        adminUser = await userManager.FindByEmailAsync(adminEmail);
+                        if (adminUser != null)
+                        {
+                            await userManager.AddToRoleAsync(adminUser, _adminRole!);
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Failed to create admin user: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
+                        Console.ResetColor();
+                    }
                 }
 
 
@@ -104,12 +136,26 @@ namespace MLFamilyTravelBlog.Data
                     EmailConfirmed = true
                 };
 
-                blogUser = await userManager.FindByEmailAsync(moderatorEmail!);
+                blogUser = await userManager.FindByEmailAsync(moderatorEmail);
 
                 if (blogUser == null)
                 {
-                    await userManager.CreateAsync(moderatorUser, moderatorPassword!);
-                    await userManager.AddToRoleAsync(moderatorUser, _moderatorRole!);
+                    IdentityResult createResult = await userManager.CreateAsync(moderatorUser, moderatorPassword);
+                    if (createResult.Succeeded)
+                    {
+                        // Refetch the user from database to ensure we have the persisted entity
+                        moderatorUser = await userManager.FindByEmailAsync(moderatorEmail);
+                        if (moderatorUser != null)
+                        {
+                            await userManager.AddToRoleAsync(moderatorUser, _moderatorRole!);
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Failed to create moderator user: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
+                        Console.ResetColor();
+                    }
                 }
 
             }
