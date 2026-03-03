@@ -1,54 +1,191 @@
 ﻿@model MLFamilyTravelBlog.Models.Comment
 
+<style>
+    .modern-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .page-header {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #512BD4;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .page-header p {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    .form-card {
+        background: linear-gradient(135deg, #faf8fe 0%, #f9f7fd 100%);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(81, 43, 212, 0.08);
+        border: 1px solid rgba(81, 43, 212, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .modern-form-group {
+        margin-bottom: 28px;
+    }
+
+    .modern-form-label {
+        font-weight: 600;
+        color: #2c2c2c;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+    .modern-form-label i {
+        color: #512BD4;
+        margin-right: 6px;
+    }
+
+    .modern-form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #fdfcff 0%, #faf8fe 100%);
+        width: 100%;
+    }
+
+    .modern-form-control:focus {
+        border-color: #512BD4;
+        box-shadow: 0 0 0 4px rgba(81, 43, 212, 0.1);
+        background: linear-gradient(135deg, #ffffff 0%, #fdfcff 100%);
+        outline: none;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+
+    .btn-modern {
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+    }
+
+    .btn-modern-cancel {
+        background: linear-gradient(135deg, #fdfcff 0%, #faf8fe 100%);
+        color: #6c757d;
+        border: 2px solid rgba(81, 43, 212, 0.2);
+    }
+
+    .btn-modern-cancel:hover {
+        background: linear-gradient(135deg, #f9f7fd 0%, #f5f2fb 100%);
+        color: #495057;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(81, 43, 212, 0.15);
+    }
+
+    .btn-modern-submit {
+        background: linear-gradient(135deg, #512BD4 0%, #6941C6 100%);
+        color: white;
+        padding: 16px 40px;
+    }
+
+    .btn-modern-submit:hover {
+        background: linear-gradient(135deg, #4521b5 0%, #5832a8 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(81, 43, 212, 0.4);
+    }
+</style>
+
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Comment";
 }
 
-<h1>Create</h1>
+<div class="post-single-wrapper axil-section-gap bg-color-white">
+    <div class="modern-form-container">
+        <div class="page-header">
+            <h1><i class="fas fa-comment-alt"></i> Create Comment</h1>
+            <p>Add a new comment</p>
+        </div>
 
-<h4>Comment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Body" class="control-label"></label>
-                <input asp-for="Body" class="form-control" />
-                <span asp-validation-for="Body" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Updated" class="control-label"></label>
-                <input asp-for="Updated" class="form-control" />
-                <span asp-validation-for="Updated" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdateReason" class="control-label"></label>
-                <input asp-for="UpdateReason" class="form-control" />
-                <span asp-validation-for="UpdateReason" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class ="form-control" asp-items="ViewBag.AuthorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BlogPostId" class="control-label"></label>
-                <select asp-for="BlogPostId" class ="form-control" asp-items="ViewBag.BlogPostId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="form-card">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="modern-form-group">
+                    <label asp-for="Body" class="modern-form-label">
+                        <i class="fas fa-comment-dots"></i> Comment
+                    </label>
+                    <input asp-for="Body" class="form-control modern-form-control" placeholder="Enter your comment..." />
+                    <span asp-validation-for="Body" class="text-danger"></span>
+                </div>
+                
+                <div class="modern-form-group">
+                    <label asp-for="CreatedAt" class="modern-form-label">
+                        <i class="far fa-calendar"></i> Created At
+                    </label>
+                    <input asp-for="CreatedAt" class="form-control modern-form-control" />
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+                
+                <div class="modern-form-group">
+                    <label asp-for="Updated" class="modern-form-label">
+                        <i class="fas fa-sync-alt"></i> Updated
+                    </label>
+                    <input asp-for="Updated" class="form-control modern-form-control" />
+                    <span asp-validation-for="Updated" class="text-danger"></span>
+                </div>
+                
+                <div class="modern-form-group">
+                    <label asp-for="UpdateReason" class="modern-form-label">
+                        <i class="fas fa-info-circle"></i> Update Reason
+                    </label>
+                    <input asp-for="UpdateReason" class="form-control modern-form-control" placeholder="Reason for update..." />
+                    <span asp-validation-for="UpdateReason" class="text-danger"></span>
+                </div>
+                
+                <div class="modern-form-group">
+                    <label asp-for="AuthorId" class="modern-form-label">
+                        <i class="fas fa-user"></i> Author
+                    </label>
+                    <select asp-for="AuthorId" class="form-control modern-form-control" asp-items="ViewBag.AuthorId"></select>
+                </div>
+                
+                <div class="modern-form-group">
+                    <label asp-for="BlogPostId" class="modern-form-label">
+                        <i class="fas fa-newspaper"></i> Blog Post
+                    </label>
+                    <select asp-for="BlogPostId" class="form-control modern-form-control" asp-items="ViewBag.BlogPostId"></select>
+                </div>
+                
+                <div class="action-buttons">
+                    <a asp-action="Index" class="btn-modern btn-modern-cancel">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn-modern btn-modern-submit">
+                        <i class="fas fa-save"></i> Create Comment
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

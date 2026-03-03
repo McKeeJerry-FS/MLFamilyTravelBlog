@@ -1,75 +1,345 @@
 html {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 @media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+  html {
+    font-size: 16px;
+  }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
+  background: linear-gradient(135deg, #f5f2fb 0%, #f7f4fc 50%, #f9f6fd 100%);
+  background-attachment: fixed;
 }
 
+.bg-color-white {
+  background: linear-gradient(135deg, #f9f7fd 0%, #fbf9fe 100%) !important;
+}
+
+.bg-color-grey {
+  background: linear-gradient(135deg, #f3f0f9 0%, #f5f2fb 100%) !important;
+}
+
+.main-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(81, 43, 212, 0.04) 0%,
+    rgba(81, 43, 212, 0.03) 100%
+  );
+}
+
+.container,
+.post-single-wrapper,
+.axil-section-gap,
+.bcg-color-white {
+  background: linear-gradient(
+    135deg,
+    rgba(81, 43, 212, 0.03) 0%,
+    rgba(81, 43, 212, 0.025) 100%
+  );
+}
+
+.content-block {
+  background: transparent !important;
+  transition: all 0.3s ease;
+}
+
+.content-block:hover {
+  background: transparent !important;
+}
+
+.post-content {
+  background: transparent !important;
+  padding: 24px;
+}
+
+.content-block .post-content .title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+  transition: color 0.3s ease;
+}
+
+.content-block .post-content .title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.content-block:hover .post-content .title {
+  color: #0066cc;
+}
+
+.content-block .post-cat {
+  margin-bottom: 12px;
+}
+
+.content-block .post-cat-list a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.content-block .post-cat-list a:hover {
+  color: #0052a3;
+}
+
+.content-block.post-list-view,
+.content-block.post-grid,
+.content-block.post-default,
+.content-block.post-medium {
+  background: #ffffff !important;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.content-block.post-list-view:hover,
+.content-block.post-grid:hover,
+.content-block.post-default:hover,
+.content-block.post-medium:hover {
+  background: #ffffff !important;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.axil-post-details {
+  background: transparent !important;
+}
+
+.axil-single-widget {
+  background: linear-gradient(135deg, #f9f7fd 0%, #f7f4fc 100%) !important;
+  border: 1px solid rgba(81, 43, 212, 0.2);
+  border-radius: 12px;
+}
+
+.featured-post .content-block {
+  background: transparent !important;
+}
+
+.content-block .post-thumbnail::after {
+  display: none;
+}
+
+/* Accent colors using .NET purple */
+.accent-dotnet {
+  color: #512bd4;
+}
+
+.bg-accent-dotnet {
+  background: linear-gradient(135deg, #512bd4 0%, #6941c6 100%);
+}
+
+.axil-header {
+  border-bottom: 2px solid rgba(81, 43, 212, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 242, 251, 0.95) 100%
+  ) !important;
+  backdrop-filter: blur(10px);
+}
+
+.axil-footer-area {
+  background: linear-gradient(to bottom, #f0edf7 0%, #ebe7f3 100%) !important;
+  border-top: 2px solid rgba(81, 43, 212, 0.15);
+}
+
+.about-author {
+  background: linear-gradient(135deg, #f9f7fd 0%, #f5f2fb 100%);
+  border: 1px solid rgba(81, 43, 212, 0.2);
+  border-radius: 12px;
+}
+
+.comment-respond,
+.axil-comment-area {
+  background: linear-gradient(
+    to bottom,
+    rgba(249, 247, 253, 0.85) 0%,
+    rgba(245, 242, 251, 0.85) 100%
+  );
+}
+
+.comment-list .comment .single-comment {
+  background: linear-gradient(
+    135deg,
+    rgba(249, 247, 253, 0.92) 0%,
+    rgba(247, 244, 252, 0.92) 100%
+  );
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(81, 43, 212, 0.12);
+}
+
+/* Pagination with .NET purple */
 .my-page-item {
-    display: inline-block;
-    list-style: none;
+  display: inline-block;
+  list-style: none;
 }
 
 .my-page-link {
-    display: block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    background-color: #fff;
-    text-align: center;
-    text-decoration: none;
-    color: #252525;
-    border-radius: 4px;
-    margin: 5px;
-    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
+  display: block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background: linear-gradient(135deg, #f9f7fd 0%, #f5f2fb 100%);
+  text-align: center;
+  text-decoration: none;
+  color: #512bd4;
+  border-radius: 8px;
+  margin: 5px;
+  box-shadow: 0 2px 4px rgba(81, 43, 212, 0.15);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(81, 43, 212, 0.2);
 }
 
-.my-page-item a.my-page-link:hover, a.my-page-link:active {
-    color: #fff;
-    background-color: #ff993b;
+.my-page-item a.my-page-link:hover,
+a.my-page-link:active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #512bd4 0%, #6941c6 100%);
+  box-shadow: 0 4px 12px rgba(81, 43, 212, 0.3);
+  transform: translateY(-2px);
 }
 
 .my-page-item my-page-link li:first-child a {
-    border-radius: 40px 0 0 40px;
+  border-radius: 40px 0 0 40px;
 }
 
 .my-page-item my-page-link li:last-child a {
-    border-radius: 0 40px 40px 0;
-}
-
-.tagcloud > .disabledTag {
-    background-color: lightgray;
-    color: gray;
-    font-weight: bold
-}
-
-.tagcloud > a:hover {
-    color: white !important;
+  border-radius: 0 40px 40px 0;
 }
 
 .tagcloud a {
-    color: black;
+  background: transparent;
+  color: #000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 5px 15px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+
+.tagcloud a:hover {
+  background: transparent;
+  color: #000 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tagcloud > .disabledTag {
+  background: transparent;
+  color: gray;
+  font-weight: bold;
 }
 
 .tagcloud > .disabledTag:hover {
-    background-color: lightgray;
-    color: darkgray !important;
-    border-color: lightgray;
+  background: transparent;
+  color: darkgray !important;
+  border-color: lightgray;
+}
+
+.content-block.post-list-view .post-thumbnail,
+.content-block.post-grid .post-thumbnail {
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.content-block .post-thumbnail img {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.content-block:hover .post-thumbnail img {
+  transform: scale(1.05);
+}
+
+.content-block .post-thumbnail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content-block:hover .post-thumbnail::before {
+  opacity: 1;
+}
+
+/* Modern post style */
+.content-block.modern-post-style {
+  background: transparent !important;
+}
+
+/* Trending posts */
+.content-block.trend-post {
+  background: transparent;
+}
+
+.content-block.trend-post.is-active {
+  background: transparent;
+}
+
+/* Banner and hero sections */
+.banner-single-post,
+.axil-banner {
+  background: transparent;
+}
+
+/* Forms with mid-tone gradient */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  background: transparent;
+  border-color: #000;
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+/* Search form styling */
+.axil-search.form-group input {
+  background: transparent;
 }

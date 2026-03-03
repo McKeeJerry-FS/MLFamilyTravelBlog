@@ -197,18 +197,18 @@ namespace MLFamilyTravelBlog.Controllers
 
         #endregion
 
-        #region Task<IActionResult> Details(string? slug)
+        #region Task<IActionResult> Details(int? id)
         // GET: BlogPosts/Details/5
         [AllowAnonymous]
-        public async Task<IActionResult> Details(string? slug)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(slug))
+            if (id == null)
             {
                 return NotFound();
             }
 
             // New BlogService in Use
-            var blogPost = await _blogService.GetBlogBySlugAsync(slug);
+            var blogPost = await _blogService.GetBlogDetailsAsync(id);
 
             if (blogPost == null)
             {
@@ -249,6 +249,7 @@ namespace MLFamilyTravelBlog.Controllers
         {
             ModelState.Remove("BlogUserId");
             ModelState.Remove("Slug");
+            ModelState.Remove("AuthorId"); // Add this line
 
             if (ModelState.IsValid)
             {
@@ -266,6 +267,9 @@ namespace MLFamilyTravelBlog.Controllers
 
                 blogPost.Slug = newSlug;
                 blogPost.Created = DateTimeOffset.Now.ToUniversalTime();
+                
+                // SET THE AUTHOR ID TO THE CURRENT USER
+                blogPost.AuthorId = _userManager.GetUserId(User)!;
 
                 if (blogPost.ImageFile != null)
                 {
@@ -293,10 +297,10 @@ namespace MLFamilyTravelBlog.Controllers
                     if (subscribers.Any())
                     {
                         string subject = $" Tech Pulse New Post alert: {blogPost.Title}";
-                        string url = Url.Action("Details", "BlogPosts", new { slug = blogPost.Slug }, protocol: Request.Scheme, host: Request.Host.ToString());
+                        string? url = Url.Action("Details", "BlogPosts", new { id = blogPost.Id }, protocol: Request.Scheme, host: Request.Host.ToString());
                         if (string.IsNullOrEmpty(url))
                         {
-                            url = $"{Request.Scheme}://{Request.Host}/BlogPosts/Details/{blogPost.Slug}";
+                            url = $"{Request.Scheme}://{Request.Host}/BlogPosts/Details/{blogPost.Id}";
                         }
                         string message = $"<p>A new blog post titled '<strong>{blogPost.Title}</strong>' has been published!</p>" +
                                         $"<p>{blogPost.Abstract}</p>" +
@@ -355,7 +359,7 @@ namespace MLFamilyTravelBlog.Controllers
         [Authorize(Roles = "Admin, Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,BlogUserId,Abstract,Content,CreatedDate,UpdatedDate,Slug,IsArchived,IsPublished,CategoryId,ImageFile,ImageData,ImageType")] BlogPost blogPost, IEnumerable<int> selected)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,BlogUserId,Abstract,Content,CreatedDate,UpdatedDate,Slug,IsArchived,IsPublished,CategoryId,ImageFile,ImageData,ImageType,AuthorId")] BlogPost blogPost, IEnumerable<int> selected)
         {
             if (id != blogPost.Id)
             {
@@ -363,6 +367,7 @@ namespace MLFamilyTravelBlog.Controllers
             }
 
             ModelState.Remove("Slug");
+            ModelState.Remove("AuthorId"); // Add this line
 
             if (ModelState.IsValid)
             {
@@ -381,15 +386,20 @@ namespace MLFamilyTravelBlog.Controllers
                     }
 
                     blogPost.Slug = newSlug;
-
                     blogPost.Updated = DateTimeOffset.Now.ToUniversalTime();
+                    
                     if (blogPost.ImageFile != null)
                     {
                         blogPost.ImageData = await _imageService.ConvertFileToByteArrayAsynC(blogPost.ImageFile);
                         blogPost.ImageType = blogPost.ImageFile.ContentType;
                     }
 
-                    // Future Enhancement: If blog post is brought back from archive, add a Revival Date to show the date the post returns
+                    // Preserve the AuthorId if not set
+                    if (string.IsNullOrEmpty(blogPost.AuthorId))
+                    {
+                        var existingPost = await _blogService.GetBlogByIdAsync(id);
+                        blogPost.AuthorId = existingPost!.AuthorId;
+                    }
 
                     // new BlogService in use
                     blogPost = await _blogService.EditBlogPostAsync(blogPost, selected);
@@ -475,10 +485,8 @@ namespace MLFamilyTravelBlog.Controllers
         #region Task<IActionResult> SearchIndex(string? searchString, int? pageNum)
         // Search Feature
         [AllowAnonymous]
-        public async Task<IActionResult> SearchIndex(string? searchString, int? pageNum)
+        public IActionResult SearchIndex(string? searchString, int? pageNum)
         {
-
-
             if (string.IsNullOrWhiteSpace(searchString))
             {
                 return RedirectToAction(nameof(Index));
@@ -490,7 +498,6 @@ namespace MLFamilyTravelBlog.Controllers
             IPagedList<BlogPost> blogPosts = blogPostsEnumerable.ToPagedList(page, pageSize);
             ViewData["Search"] = searchString;
             return View(nameof(Index), blogPosts);
-
         }
 
         #endregion

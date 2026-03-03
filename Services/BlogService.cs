@@ -28,18 +28,17 @@ namespace MLFamilyTravelBlog.Services
             #region GetBlogPosts
             public async Task<IEnumerable<BlogPost>> GetBlogPostsAsync()
             {
-
                 try
                 {
-
-                    List<BlogPost> blogPosts = new();
-
-                    blogPosts = await _context.BlogPosts.Include(b => b.Tags)
-                                                    .Include(b => b.Category)
-                                                    .Include(b => b.Comments)
-                                                    .Include(b => b.Likes)
-                                                    .OrderByDescending(b => b.Created)
-                                                    .ToListAsync();
+                    List<BlogPost> blogPosts = await _context.BlogPosts
+                        .Include(b => b.Author)  // Add this line
+                        .Include(b => b.Tags)
+                        .Include(b => b.Category)
+                        .Include(b => b.Comments)
+                        .Include(b => b.Likes)
+                        .OrderByDescending(b => b.Created)
+                        .ToListAsync();
+                        
                     List<BlogPost> selectedBlogPosts = new();
                     foreach (var blogPost in blogPosts)
                     {
@@ -49,11 +48,9 @@ namespace MLFamilyTravelBlog.Services
                         }
                     }
                     return selectedBlogPosts;
-
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
 
@@ -63,24 +60,21 @@ namespace MLFamilyTravelBlog.Services
             #region GetAllBlogPosts
             public async Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync()
             {
-
                 try
                 {
-
-                    List<BlogPost> blogPosts = new();
-
-                    blogPosts = await _context.BlogPosts.Include(b => b.Tags)
-                                                    .Include(b => b.Category)
-                                                    .Include(b => b.Comments)
-                                                    .Include(b => b.Likes)
-                                                    .OrderByDescending(b => b.Created)
-                                                    .ToListAsync();
+                    List<BlogPost> blogPosts = await _context.BlogPosts
+                        .Include(b => b.Author)  // Add this line
+                        .Include(b => b.Tags)
+                        .Include(b => b.Category)
+                        .Include(b => b.Comments)
+                        .Include(b => b.Likes)
+                        .OrderByDescending(b => b.Created)
+                        .ToListAsync();
+                        
                     return blogPosts;
-
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
 
@@ -90,17 +84,16 @@ namespace MLFamilyTravelBlog.Services
             #region GetArchivedBlogPosts
             public async Task<IEnumerable<BlogPost>> GetAllArchivedBlogPostsAsync(int? tagId)
             {
-
                 try
                 {
-
-                    List<BlogPost> blogPosts = new();
-
-                    blogPosts = await _context.BlogPosts.Include(b => b.Tags)
-                                                    .Include(b => b.Category)
-                                                    .Include(b => b.Comments)
-                                                    .OrderByDescending(b => b.Created)
-                                                    .ToListAsync();
+                    List<BlogPost> blogPosts = await _context.BlogPosts
+                        .Include(b => b.Author)  // Add this line
+                        .Include(b => b.Tags)
+                        .Include(b => b.Category)
+                        .Include(b => b.Comments)
+                        .OrderByDescending(b => b.Created)
+                        .ToListAsync();
+                        
                     List<BlogPost> selectedBlogPosts = new();
                     foreach (var blogPost in blogPosts)
                     {
@@ -110,11 +103,9 @@ namespace MLFamilyTravelBlog.Services
                         }
                     }
                     return selectedBlogPosts;
-
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
 
@@ -125,16 +116,15 @@ namespace MLFamilyTravelBlog.Services
             #region GetDraftBlogPosts
             public async Task<IEnumerable<BlogPost>> GetAllDraftBlogPostsAsync(int? tagId)
             {
-
                 try
                 {
-
-                    List<BlogPost> blogPosts = new();
-
-                    blogPosts = await _context.BlogPosts.Include(b => b.Tags)
-                                                    .Include(b => b.Category)
-                                                    .Include(b => b.Comments)
-                                                    .ToListAsync();
+                    List<BlogPost> blogPosts = await _context.BlogPosts
+                        .Include(b => b.Author)  // Add this line
+                        .Include(b => b.Tags)
+                        .Include(b => b.Category)
+                        .Include(b => b.Comments)
+                        .ToListAsync();
+                        
                     List<BlogPost> selectedBlogPosts = new();
                     foreach (var blogPost in blogPosts)
                     {
@@ -144,16 +134,13 @@ namespace MLFamilyTravelBlog.Services
                         }
                     }
                     return selectedBlogPosts;
-
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
 
             }
-
             #endregion
 
             #region GetBlogDetails
@@ -163,6 +150,7 @@ namespace MLFamilyTravelBlog.Services
                 {
                     BlogPost? blogPost = await _context.BlogPosts
                         .Include(b => b.Category)
+                        .Include(b => b.Author)  // Add this line
                         .Include(b => b.Comments)
                             .ThenInclude(b => b.Author)
                         .Include(b => b.Tags)
@@ -194,15 +182,17 @@ namespace MLFamilyTravelBlog.Services
                         if (blogUser != null)
                         {
                             //List<int> blogPostIds = _context.BlogLikes.Where(bl => bl.BlogUserId == blogUserId && bl.IsLiked == true).Select(b => b.BlogPostId).ToList();
-                            blogPosts = await _context.BlogPosts.Where(b => b.Likes.Any(l => l.BlogUserId == blogUserId && l.IsLiked == true) &&
-                                                                                        b.IsPublished == true &&
-                                                                                        b.IsArchived == false)
-                                                                .Include(b => b.Likes)
-                                                                .Include(b => b.Comments)
-                                                                .Include(b => b.Category)
-                                                                .Include(b => b.Tags)
-                                                                .OrderByDescending(b => b.Created)
-                                                                .ToListAsync();
+                            blogPosts = await _context.BlogPosts
+                                .Where(b => b.Likes.Any(l => l.BlogUserId == blogUserId && l.IsLiked == true) &&
+                                            b.IsPublished == true &&
+                                            b.IsArchived == false)
+                                .Include(b => b.Author)  // Add this line
+                                .Include(b => b.Likes)
+                                .Include(b => b.Comments)
+                                .Include(b => b.Category)
+                                .Include(b => b.Tags)
+                                .OrderByDescending(b => b.Created)
+                                .ToListAsync();
                         }
                     }
                     return blogPosts;
@@ -220,6 +210,7 @@ namespace MLFamilyTravelBlog.Services
             {
                 BlogPost? blogPost = await _context.BlogPosts
                        .Include(b => b.Category)
+                       .Include(b => b.Author)  // Add this line
                        .Include(b => b.Comments)
                            .ThenInclude(b => b.Author)
                        .FirstOrDefaultAsync(m => m.Id == id);
@@ -233,8 +224,11 @@ namespace MLFamilyTravelBlog.Services
             {
                 BlogPost? blogPost = await _context.BlogPosts
                        .Include(b => b.Category)
+                       .Include(b => b.Author)  // Add this line
                        .Include(b => b.Comments)
                            .ThenInclude(b => b.Author)
+                       .Include(b => b.Likes)
+                       .Include(b => b.Tags)
                        .FirstOrDefaultAsync(m => m.Slug == slug && m.IsPublished == true && m.IsArchived == false);
 
                 return blogPost!;
@@ -249,13 +243,13 @@ namespace MLFamilyTravelBlog.Services
             {
                 try
                 {
-
-                    List<BlogPost> blogPosts = new();
-
-                    blogPosts = await _context.BlogPosts.Include(b => b.Tags)
-                                                    .Include(b => b.Category)
-                                                    .Include(b => b.Comments)
-                                                    .ToListAsync();
+                    List<BlogPost> blogPosts = await _context.BlogPosts
+                        .Include(b => b.Author)  // Add this line
+                        .Include(b => b.Tags)
+                        .Include(b => b.Category)
+                        .Include(b => b.Comments)
+                        .ToListAsync();
+                        
                     List<BlogPost> selectedBlogPosts = new();
                     foreach (var blogPost in blogPosts)
                     {
@@ -266,7 +260,6 @@ namespace MLFamilyTravelBlog.Services
                     }
 
                     return selectedBlogPosts.OrderByDescending(b => b.Comments!.Count());
-
                 }
                 catch (Exception)
                 {

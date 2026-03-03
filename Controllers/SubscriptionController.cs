@@ -3,16 +3,19 @@ using MLFamilyTravelBlog.Data;
 using MLFamilyTravelBlog.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace MLFamilyTravelBlog.Controllers
 {
     public class SubscriptionController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public SubscriptionController(ApplicationDbContext context)
+        public SubscriptionController(ApplicationDbContext context, UserManager<BlogUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -37,11 +40,16 @@ namespace MLFamilyTravelBlog.Controllers
                 return View();
             }
 
-            var subscriber = new Subscriber { Email = email };
+            var subscriber = new Subscriber
+            {
+                Email = email,
+                SubscribedOn = DateTime.UtcNow
+            };
             _context.Subscribers.Add(subscriber);
             await _context.SaveChangesAsync();
-            ViewBag.Message = "Thank you for subscribing!";
-            return View();
+
+            TempData["SuccessMessage"] = "Thank you for subscribing!";
+            return RedirectToAction("Index", "BlogPosts");
         }
 
         [HttpGet]
@@ -59,13 +67,20 @@ namespace MLFamilyTravelBlog.Controllers
             {
                 _context.Subscribers.Remove(subscriber);
                 await _context.SaveChangesAsync();
-                ViewBag.Message = "You have been unsubscribed.";
+                TempData["SuccessMessage"] = "You have been unsubscribed.";
             }
             else
             {
                 ViewBag.Message = "Email not found.";
+                return View();
             }
-            return View();
+            return RedirectToAction("Index", "BlogPosts");
+        }
+
+        // Helper method to check if user is subscribed
+        private bool IsUserSubscribed(string email)
+        {
+            return _context.Subscribers.Any(s => s.Email == email);
         }
     }
 }

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<MLFamilyTravelBlog.Models.BlogPost>
+
+@{
+    ViewData["Title"] = "Draft Index";
+}
+
+<h1 class="text-white">Draft Blog Posts</h1>
+
+<p>
+    <a asp-action="Create" class="text-white">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Abstract)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsArchived)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPublished)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tags)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abstract)
+                </td>
+                <td>
+                    @Html.Raw(item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @(item.Updated.HasValue ? item.Updated.Value.LocalDateTime.ToString("g") : "")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsArchived)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsPublished)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category!.Name)
+                </td>
+                <td>
+                    @foreach (Tag tag in item.Tags)
+                    {
+                        <span class="badge rounded-pill border border-1 bg-primary text-light fw-normal">@tag.Name</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

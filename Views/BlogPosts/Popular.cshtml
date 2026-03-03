@@ -2,26 +2,28 @@
 @inject IImageService _imageService
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Popular Posts Index";
     string? searchString = ViewBag.Search;
 }
+
+
 
 <!-- Start Author Area  -->
 <partial name="_AuthorAreaPartial" />
 <!-- End Author Area  -->
 <!-- Start Post List Wrapper  -->
-<div class="axil-post-list-area axil-section-gap bg-secondary">
+<div class="axil-post-list-area axil-section-gap bg-color-white">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-title">
                     @if (string.IsNullOrEmpty(searchString))
                     {
-                        <h2 class="title text-color-purple mb--40">Welcome to The McKee Family Travel Blog!</h2>
+                        <h2 class="title text-light mb--40">Welcome to the popular posts on The McKee Family Travel Blog!</h2>
                     }
                     else
                     {
-                        <h2 class="title text-color-purple mb--40">Search Results for '@searchString'!</h2>
+                        <h2 class="title text-light mb--40">Search Results for '@searchString'!</h2>
                     }
                 </div>
             </div>
@@ -53,25 +55,26 @@
                 {
 
                     @Html.PagedListPager(Model, pageNum => Url.Action("Index", new { pageNum }),
-                    new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "my-page-item" },
-                        PageClasses = new string[] { "my-page-link" }
-                    })
-                                }
+                            new PagedListRenderOptions
+                            {
+                                LiElementClasses = new string[] { "my-page-item" },
+                                PageClasses = new string[] { "my-page-link" }
+                            })
+                }
                 else
                 {
                     @Html.PagedListPager(Model, pageNum => Url.Action("SearchIndex", new { pageNum, searchString }),
-                    new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "my-page-item" },
-                        PageClasses = new string[] { "my-page-link" }
-                    })
-                                }
+                            new PagedListRenderOptions
+                            {
+                                LiElementClasses = new string[] { "my-page-item" },
+                                PageClasses = new string[] { "my-page-link" }
+                            })
+                }
             </div>
 
             <!-- Pagination Code End-->
 
         </div>
     </div>
+</div>
 <!-- End Post List Wrapper  -->

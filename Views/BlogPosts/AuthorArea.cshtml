@@ -16,7 +16,7 @@
                 <div class="col-lg-8 col-xl-8">
                     <div class="content-block post-list-view mt--30">
                         <div class="post-thumbnail">
-                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@blogPost.Slug">
+                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
                                 <img src="@_ImageService.ConvertByteArrayToFile(blogPost.ImageData, blogPost.ImageType, DefaultImage.BlogPostImage)"
                                      alt="Post Image">
                             </a>
@@ -24,7 +24,7 @@
                         <div class="post-content">
                             <div class="post-cat">
                                 <div class="post-cat-list">
-                                    <a class="hover-flip-item-wrapper" asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@blogPost.Slug">
+                                    <a class="hover-flip-item-wrapper" asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
                                         <span class="hover-flip-item">
                                             <span data-text="@blogPost.Category?.Name">@blogPost.Category?.Name</span> @* post category *@
                                         </span>
@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <h4 class="title">
-                                <a asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@blogPost.Slug">
+                                <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost.Id">
                                     @blogPost.Title
                                 </a>
                             </h4>

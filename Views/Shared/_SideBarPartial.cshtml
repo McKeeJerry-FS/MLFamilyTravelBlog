@@ -9,7 +9,7 @@
 <div class="sidebar-inner">
 
     <!-- Start Single Widget  -->
-    <div class="axil-single-widget widget widget_categories mb--30">
+    <div class="axil-single-widget widget widget_categories mb--30 bg-secondary">
         <ul>
             @foreach (Category category in (await _blogService.GetCategoriesAsync()).Take(4))
             {
@@ -42,12 +42,12 @@
     <!-- End Single Widget  -->
     <!-- Start Single Widget  -->
     <div class="axil-single-widget widget widget_postlist mb-30">
-        <h5 class="widget-title">Popular on Tech Pulse</h5>
+        <h5 class="widget-title">Popular on MLFTB!</h5>
         <!-- Start Post List  -->
         <div class="post-medium-block">
             @foreach (BlogPost blogPost in (await _blogService.GetPopularBlogsAsync()).Take(5))
             {
-                <div class="content-block post-medium mb--20">
+                <div class="content-block post-medium mb--20 rounded-2">
                     <div class="post-thumbnail">
                         <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost?.Id">
                             <img src="@_imageService.ConvertByteArrayToFile(blogPost.ImageData, blogPost.ImageType, DefaultImage.BlogPostImage)" alt="Post Images">
@@ -55,7 +55,7 @@
                     </div>
                     <div class="post-content">
                         <h6 class="title">
-                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-slug="@blogPost?.Slug">
+                            <a asp-action="Details" asp-controller="BlogPosts" asp-route-id="@blogPost?.Id">
                                 @blogPost!.Title
                             </a>
                         </h6>
@@ -78,7 +78,7 @@
     </div>
     <!-- End Single Widget  -->
     <!-- Start Single Widget  -->
-    <div class="axil-single-widget widget widget_social mb--30">
+    <div class="axil-single-widget widget widget_social mt-4 mb-5">
         <h5 class="widget-title">Stay In Touch</h5>
         <!-- Start Post List  -->
         <ul class="social-icon md-size justify-content-center">
